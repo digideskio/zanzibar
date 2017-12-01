@@ -165,6 +165,12 @@ func convertToArgWithHeadersClientRequest(in *endpointsBarBar.Bar_ArgWithHeaders
 
 	return out
 }
+func convertToArgWithHeadersNameClientRequest(in *endpointsBarBar.Bar_ArgWithHeaders_Args, out *clientsBarBar.Bar_ArgWithHeaders_Args) {
+	out.Name = string(in.Name)
+}
+func convertToArgWithHeadersUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithHeaders_Args, out *clientsBarBar.Bar_ArgWithHeaders_Args) {
+	out.UserUUID = (*string)(in.UserUUID)
+}
 
 func convertArgWithHeadersClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}

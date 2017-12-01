@@ -867,6 +867,27 @@ func (ms *MethodSpec) setTypeConverters(
 	}
 	typeConverter.append("\nreturn out")
 	typeConverter.append("}")
+
+	for _, primitiveStruct := range typeConverter.PrimitiveStructs {
+		// different methods here
+		typeConverter.append(
+			"func convertTo",
+			pascalCase(ms.Name),
+			pascalCase(primitiveStruct.FromField.Name),
+			"ClientRequest",
+			"(in ", ms.RequestType, ", ", "out *", downstreamMethod.ShortRequestType, ") {")
+		typeConverter.GenConverterForPrimitiveOrTypedef(
+			primitiveStruct.ToField,
+			primitiveStruct.ToIdentifier,
+			primitiveStruct.FromField,
+			primitiveStruct.FromIdentifier,
+			primitiveStruct.OverriddenField,
+			primitiveStruct.OverriddenIdentifier,
+			"",
+		)
+		typeConverter.append("}")
+	}
+
 	ms.ConvertRequestGoStatements = typeConverter.GetLines()
 
 	// TODO: support non-struct return types

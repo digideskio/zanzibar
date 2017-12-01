@@ -292,6 +292,48 @@ func convertToArgWithManyQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgWit
 
 	return out
 }
+func convertToArgWithManyQueryParamsAStrClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AStr = string(in.AStr)
+}
+func convertToArgWithManyQueryParamsAnOptStrClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptStr = (*string)(in.AnOptStr)
+}
+func convertToArgWithManyQueryParamsABoolClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.ABool = bool(in.ABool)
+}
+func convertToArgWithManyQueryParamsAnOptBoolClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptBool = (*bool)(in.AnOptBool)
+}
+func convertToArgWithManyQueryParamsAInt8ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AInt8 = int8(in.AInt8)
+}
+func convertToArgWithManyQueryParamsAnOptInt8ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptInt8 = (*int8)(in.AnOptInt8)
+}
+func convertToArgWithManyQueryParamsAInt16ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AInt16 = int16(in.AInt16)
+}
+func convertToArgWithManyQueryParamsAnOptInt16ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptInt16 = (*int16)(in.AnOptInt16)
+}
+func convertToArgWithManyQueryParamsAInt32ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AInt32 = int32(in.AInt32)
+}
+func convertToArgWithManyQueryParamsAnOptInt32ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptInt32 = (*int32)(in.AnOptInt32)
+}
+func convertToArgWithManyQueryParamsAInt64ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AInt64 = int64(in.AInt64)
+}
+func convertToArgWithManyQueryParamsAnOptInt64ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptInt64 = (*int64)(in.AnOptInt64)
+}
+func convertToArgWithManyQueryParamsAFloat64ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AFloat64 = float64(in.AFloat64)
+}
+func convertToArgWithManyQueryParamsAnOptFloat64ClientRequest(in *endpointsBarBar.Bar_ArgWithManyQueryParams_Args, out *clientsBarBar.Bar_ArgWithManyQueryParams_Args) {
+	out.AnOptFloat64 = (*float64)(in.AnOptFloat64)
+}
 
 func convertArgWithManyQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}

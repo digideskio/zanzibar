@@ -151,6 +151,9 @@ func convertToArgWithQueryHeaderClientRequest(in *endpointsBarBar.Bar_ArgWithQue
 
 	return out
 }
+func convertToArgWithQueryHeaderUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithQueryHeader_Args, out *clientsBarBar.Bar_ArgWithQueryHeader_Args) {
+	out.UserUUID = (*string)(in.UserUUID)
+}
 
 func convertArgWithQueryHeaderClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}

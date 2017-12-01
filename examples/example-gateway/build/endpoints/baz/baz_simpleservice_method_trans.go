@@ -217,6 +217,38 @@ func convertToTransClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args) *
 
 	return out
 }
+func convertToTransMessageClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg1.Message = string(in.Arg1.Message)
+}
+func convertToTransMsgClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg1.Driver.Msg = string(in.Arg1.Driver.Msg)
+}
+func convertToTransCheckClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg1.Driver.Check = (*int32)(in.Arg1.Driver.Check)
+}
+func convertToTransMsgClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg1.Rider.Msg = string(in.Arg1.Rider.Msg)
+}
+func convertToTransCheckClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg1.Rider.Check = (*int32)(in.Arg1.Rider.Check)
+}
+func convertToTransMessageClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg2.Message = string(in.Arg2.Message)
+}
+func convertToTransMsgClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg2.Driver.Msg = string(in.Arg2.Driver.Msg)
+}
+func convertToTransCheckClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg2.Driver.Check = (*int32)(in.Arg2.Driver.Check)
+}
+func convertToTransMsgClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	if in.Arg1 != nil && in.Arg1.Driver != nil {
+		out.Arg2.Rider.Msg = string(in.Arg1.Driver.Msg)
+	}
+}
+func convertToTransCheckClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
+	out.Arg2.Rider.Check = (*int32)(in.Arg2.Rider.Check)
+}
 
 func convertTransAuthErr(
 	clientError *clientsBazBaz.AuthErr,

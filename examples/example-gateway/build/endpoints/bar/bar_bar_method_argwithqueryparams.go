@@ -166,6 +166,12 @@ func convertToArgWithQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgWithQue
 
 	return out
 }
+func convertToArgWithQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithQueryParams_Args, out *clientsBarBar.Bar_ArgWithQueryParams_Args) {
+	out.Name = string(in.Name)
+}
+func convertToArgWithQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithQueryParams_Args, out *clientsBarBar.Bar_ArgWithQueryParams_Args) {
+	out.UserUUID = (*string)(in.UserUUID)
+}
 
 func convertArgWithQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}

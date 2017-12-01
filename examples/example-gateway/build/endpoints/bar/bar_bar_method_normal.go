@@ -182,6 +182,21 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 
 	return out
 }
+func convertToNormalStringFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.Request.StringField = string(in.Request.StringField)
+}
+func convertToNormalBoolFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.Request.BoolField = bool(in.Request.BoolField)
+}
+func convertToNormalTimestampClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+}
+func convertToNormalEnumFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+}
+func convertToNormalLongFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+}
 
 func convertNormalBarException(
 	clientError *clientsBarBar.BarException,

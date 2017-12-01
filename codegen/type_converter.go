@@ -68,9 +68,20 @@ type PackageNameResolver interface {
 // operates on two variables, "in" and "out" and that both are a go struct.
 type TypeConverter struct {
 	LineBuilder
+	PrimitiveStructs []PrimitiveStruct
 	Helper        PackageNameResolver
 	uninitialized map[string]*fieldStruct
 	fieldCounter  int
+}
+
+type PrimitiveStruct struct {
+	TypeName string
+	ToField *compile.FieldSpec
+	ToIdentifier string
+	FromField *compile.FieldSpec
+	FromIdentifier string
+	OverriddenField *compile.FieldSpec
+	OverriddenIdentifier string
 }
 
 // NewTypeConverter returns *TypeConverter
@@ -132,7 +143,7 @@ func (c *TypeConverter) getIdentifierName(fieldType compile.TypeSpec) (string, e
 	return t, nil
 }
 
-func (c *TypeConverter) genConverterForStruct(
+func (c *TypeConverter) GenConverterForStruct(
 	toFieldName string,
 	toFieldType *compile.StructSpec,
 	toRequired bool,
@@ -211,7 +222,7 @@ func (c *TypeConverter) genConverterForStruct(
 	return nil
 }
 
-func (c *TypeConverter) genConverterForList(
+func (c *TypeConverter) GenConverterForList(
 	toFieldType *compile.ListSpec,
 	toField *compile.FieldSpec,
 	fromField *compile.FieldSpec,
@@ -290,7 +301,7 @@ func (c *TypeConverter) genConverterForList(
 			)
 		}
 
-		err = c.genConverterForStruct(
+		err = c.GenConverterForStruct(
 			toField.Name,
 			valueStruct,
 			toField.Required,
@@ -315,7 +326,7 @@ func (c *TypeConverter) genConverterForList(
 				)
 			}
 
-			err = c.genConverterForStruct(
+			err = c.GenConverterForStruct(
 				toField.Name,
 				valueStruct,
 				toField.Required,
@@ -342,7 +353,7 @@ func (c *TypeConverter) genConverterForList(
 	return nil
 }
 
-func (c *TypeConverter) genConverterForMap(
+func (c *TypeConverter) GenConverterForMap(
 	toFieldType *compile.MapSpec,
 	toField *compile.FieldSpec,
 	fromField *compile.FieldSpec,
@@ -451,7 +462,7 @@ func (c *TypeConverter) genConverterForMap(
 			)
 		}
 
-		err = c.genConverterForStruct(
+		err = c.GenConverterForStruct(
 			toField.Name,
 			valueStruct,
 			toField.Required,
@@ -477,7 +488,7 @@ func (c *TypeConverter) genConverterForMap(
 				)
 			}
 
-			err = c.genConverterForStruct(
+			err = c.GenConverterForStruct(
 				toField.Name,
 				valueStruct,
 				toField.Required,
@@ -618,7 +629,16 @@ func (c *TypeConverter) genStructConverter(
 			*compile.StringSpec,
 			*compile.TypedefSpec:
 
-			err := c.genConverterForPrimitiveOrTypedef(
+			c.PrimitiveStructs = append(c.PrimitiveStructs, PrimitiveStruct{
+				ToField: toField,
+				ToIdentifier: toIdentifier,
+				FromField: fromField,
+				FromIdentifier: fromIdentifier,
+				OverriddenField: overriddenField,
+				OverriddenIdentifier: overriddenIdentifier,
+			})
+
+			err := c.GenConverterForPrimitiveOrTypedef(
 				toField,
 				toIdentifier,
 				fromField,
@@ -643,7 +663,7 @@ func (c *TypeConverter) genStructConverter(
 				stFromType = fromField.Type
 				stFromPrefix = keyPrefix + pascalCase(fromField.Name)
 			}
-			err := c.genConverterForStruct(
+			err := c.GenConverterForStruct(
 				toField.Name,
 				toFieldType,
 				toField.Required,
@@ -658,7 +678,7 @@ func (c *TypeConverter) genStructConverter(
 				return err
 			}
 		case *compile.ListSpec:
-			err := c.genConverterForList(
+			err := c.GenConverterForList(
 				toFieldType,
 				toField,
 				fromField,
@@ -673,7 +693,7 @@ func (c *TypeConverter) genStructConverter(
 				return err
 			}
 		case *compile.MapSpec:
-			err := c.genConverterForMap(
+			err := c.GenConverterForMap(
 				toFieldType,
 				toField,
 				fromField,
@@ -868,7 +888,7 @@ func (c *TypeConverter) assignWithOverride(
 	c.append(defaultAssign.Generate(indent, c.uninitialized))
 }
 
-func (c *TypeConverter) genConverterForPrimitiveOrTypedef(
+func (c *TypeConverter) GenConverterForPrimitiveOrTypedef(
 	toField *compile.FieldSpec,
 	toIdentifier string,
 	fromField *compile.FieldSpec,

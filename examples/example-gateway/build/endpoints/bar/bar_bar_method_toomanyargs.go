@@ -227,6 +227,39 @@ func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args)
 
 	return out
 }
+func convertToTooManyArgsStringFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Request.StringField = string(in.Request.StringField)
+}
+func convertToTooManyArgsBoolFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Request.BoolField = bool(in.Request.BoolField)
+}
+func convertToTooManyArgsTimestampClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+}
+func convertToTooManyArgsEnumFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+}
+func convertToTooManyArgsLongFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+}
+func convertToTooManyArgsFooStringClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.FooString = string(in.Foo.FooString)
+}
+func convertToTooManyArgsFooI32ClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.FooI32 = (*int32)(in.Foo.FooI32)
+}
+func convertToTooManyArgsFooI16ClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
+}
+func convertToTooManyArgsFooDoubleClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
+}
+func convertToTooManyArgsFooBoolClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.FooBool = (*bool)(in.Foo.FooBool)
+}
+func convertToTooManyArgsBodyClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	out.Foo.Message.Body = string(in.Foo.Message.Body)
+}
 
 func convertTooManyArgsBarException(
 	clientError *clientsBarBar.BarException,

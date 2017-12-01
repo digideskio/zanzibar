@@ -240,6 +240,30 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 
 	return out
 }
+func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Request.Name = string(in.Request.Name)
+}
+func convertToArgWithNestedQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Request.UserUUID = (*string)(in.Request.UserUUID)
+}
+func convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
+}
+func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
+}
+func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Opt.Name = string(in.Opt.Name)
+}
+func convertToArgWithNestedQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
+}
+func convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
+}
+func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
+}
 
 func convertArgWithNestedQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
