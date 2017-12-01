@@ -179,10 +179,7 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	} else {
 		out.Request = nil
 	}
-	out.StringList = make([]string, len(in.StringList))
-	for index1, value2 := range in.StringList {
-		out.StringList[index1] = string(value2)
-	}
+	convertToNormalStringListClientRequest(in, out)
 
 	return out
 }
@@ -200,6 +197,12 @@ func convertToNormalEnumFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, 
 }
 func convertToNormalLongFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+}
+func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	out.StringList = make([]string, len(in.StringList))
+	for index1, value2 := range in.StringList {
+		out.StringList[index1] = string(value2)
+	}
 }
 
 func convertNormalBarException(

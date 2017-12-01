@@ -838,29 +838,42 @@ func (ms *MethodSpec) setDownstream(
 	return nil
 }
 
-func (ms *MethodSpec) setPrimitiveConverters(
+func (ms *MethodSpec) setHelperFunctionConverters(
 	typeConverter *TypeConverter,
 	downstreamMethod *MethodSpec,
 	inType string,
 	outType string,
 	requestType string,
 ) {
-	for _, primitiveStruct := range typeConverter.PrimitiveStructs {
-		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(primitiveStruct.FromField.Name) + requestType
+	for _, helperStruct := range typeConverter.HelperFunctionStructs {
+		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
 		// different methods here
 		typeConverter.append(
 			"func ",
 			methodName,
 			"(in ", inType, ", ", "out *", outType, ") {")
-		typeConverter.GenConverterForPrimitiveOrTypedef(
-			primitiveStruct.ToField,
-			primitiveStruct.ToIdentifier,
-			primitiveStruct.FromField,
-			primitiveStruct.FromIdentifier,
-			primitiveStruct.OverriddenField,
-			primitiveStruct.OverriddenIdentifier,
-			"",
-		)
+		if helperStruct.TypeName == "primitive" {
+			typeConverter.GenConverterForPrimitiveOrTypedef(
+				helperStruct.ToField,
+				helperStruct.ToIdentifier,
+				helperStruct.FromField,
+				helperStruct.FromIdentifier,
+				helperStruct.OverriddenField,
+				helperStruct.OverriddenIdentifier,
+				"")
+		} else if helperStruct.TypeName == "list" {
+			typeConverter.GenConverterForList(
+				helperStruct.ToFieldValueSpec,
+				helperStruct.ToField,
+				helperStruct.FromField,
+				helperStruct.OverriddenField,
+				helperStruct.ToIdentifier,
+				helperStruct.FromIdentifier,
+				helperStruct.OverriddenIdentifier,
+				*helperStruct.KeyPrefix,
+				"",
+				requestType)
+		}
 		typeConverter.append("}")
 	}
 }
@@ -896,7 +909,7 @@ func (ms *MethodSpec) setTypeConverters(
 	typeConverter.append("\nreturn out")
 	typeConverter.append("}")
 
-	ms.setPrimitiveConverters(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
+	ms.setHelperFunctionConverters(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
 	ms.ConvertRequestGoStatements = typeConverter.GetLines()
 
 	// TODO: support non-struct return types
@@ -937,7 +950,7 @@ func (ms *MethodSpec) setTypeConverters(
 		}
 	}
 	respConverter.append("\nreturn out \t}")
-	ms.setPrimitiveConverters(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
+	ms.setHelperFunctionConverters(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
 	ms.ConvertResponseGoStatements = respConverter.GetLines()
 
 	return nil

@@ -68,22 +68,24 @@ type PackageNameResolver interface {
 // operates on two variables, "in" and "out" and that both are a go struct.
 type TypeConverter struct {
 	LineBuilder
-	PrimitiveStructs []PrimitiveStruct
-	Helper        PackageNameResolver
-	uninitialized map[string]*fieldStruct
-	fieldCounter  int
+	HelperFunctionStructs []HelperFunctionStruct
+	Helper                PackageNameResolver
+	uninitialized         map[string]*fieldStruct
+	fieldCounter          int
 
 	MethodName string
 }
 
-type PrimitiveStruct struct {
+type HelperFunctionStruct struct {
 	TypeName string
 	ToField *compile.FieldSpec
+	ToFieldValueSpec compile.TypeSpec
 	ToIdentifier string
 	FromField *compile.FieldSpec
 	FromIdentifier string
 	OverriddenField *compile.FieldSpec
 	OverriddenIdentifier string
+	KeyPrefix *string
 }
 
 // NewTypeConverter returns *TypeConverter
@@ -228,7 +230,7 @@ func (c *TypeConverter) GenConverterForStruct(
 }
 
 func (c *TypeConverter) GenConverterForList(
-	toFieldType *compile.ListSpec,
+	toFieldValueSpec compile.TypeSpec,
 	toField *compile.FieldSpec,
 	fromField *compile.FieldSpec,
 	overriddenField *compile.FieldSpec,
@@ -239,12 +241,12 @@ func (c *TypeConverter) GenConverterForList(
 	indent string,
 		requestType string,
 ) error {
-	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
+	typeName, err := c.getGoTypeName(toFieldValueSpec)
 	if err != nil {
 		return err
 	}
 
-	valueStruct, isStruct := toFieldType.ValueSpec.(*compile.StructSpec)
+	valueStruct, isStruct := toFieldValueSpec.(*compile.StructSpec)
 	sourceIdentifier := fromIdentifier
 	checkOverride := false
 
@@ -641,7 +643,8 @@ func (c *TypeConverter) genStructConverter(
 			*compile.StringSpec,
 			*compile.TypedefSpec:
 
-			c.PrimitiveStructs = append(c.PrimitiveStructs, PrimitiveStruct{
+			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
+				TypeName: "primitive",
 				ToField: toField,
 				ToIdentifier: toIdentifier,
 				FromField: fromField,
@@ -692,21 +695,35 @@ func (c *TypeConverter) genStructConverter(
 				return err
 			}
 		case *compile.ListSpec:
-			err := c.GenConverterForList(
-				toFieldType,
-				toField,
-				fromField,
-				overriddenField,
-				toIdentifier,
-				fromIdentifier,
-				overriddenIdentifier,
-				keyPrefix,
-				indent,
-					requestType,
-			)
-			if err != nil {
-				return err
-			}
+
+			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
+				TypeName: "list",
+				ToField: toField,
+				ToFieldValueSpec: toFieldType.ValueSpec,
+				ToIdentifier: toIdentifier,
+				FromField: fromField,
+				FromIdentifier: fromIdentifier,
+				OverriddenField: overriddenField,
+				OverriddenIdentifier: overriddenIdentifier,
+				KeyPrefix: &keyPrefix,
+			})
+			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
+
+			//err := c.GenConverterForList(
+			//	toFieldType.ValueSpec,
+			//	toField,
+			//	fromField,
+			//	overriddenField,
+			//	toIdentifier,
+			//	fromIdentifier,
+			//	overriddenIdentifier,
+			//	keyPrefix,
+			//	indent,
+			//	requestType,
+			//)
+			//if err != nil {
+			//	return err
+			//}
 		case *compile.MapSpec:
 			err := c.GenConverterForMap(
 				toFieldType,
