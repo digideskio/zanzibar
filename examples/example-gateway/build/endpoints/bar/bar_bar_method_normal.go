@@ -179,6 +179,10 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	} else {
 		out.Request = nil
 	}
+	out.StringList = make([]string, len(in.StringList))
+	for index1, value2 := range in.StringList {
+		out.StringList[index1] = string(value2)
+	}
 
 	return out
 }

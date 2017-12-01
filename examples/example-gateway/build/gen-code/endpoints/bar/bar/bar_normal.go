@@ -14,8 +14,35 @@ import (
 //
 // The arguments for normal are sent and received over the wire as this struct.
 type Bar_Normal_Args struct {
-	Request *BarRequest `json:"request,required"`
+	Request    *BarRequest `json:"request,required"`
+	StringList []string    `json:"stringList,omitempty"`
 }
+
+type _List_String_ValueList []string
+
+func (v _List_String_ValueList) ForEach(f func(wire.Value) error) error {
+	for _, x := range v {
+		w, err := wire.NewValueString(x), error(nil)
+		if err != nil {
+			return err
+		}
+		err = f(w)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (v _List_String_ValueList) Size() int {
+	return len(v)
+}
+
+func (_List_String_ValueList) ValueType() wire.Type {
+	return wire.TBinary
+}
+
+func (_List_String_ValueList) Close() {}
 
 // ToWire translates a Bar_Normal_Args struct into a Thrift-level intermediate
 // representation. This intermediate representation may be serialized
@@ -34,7 +61,7 @@ type Bar_Normal_Args struct {
 //   }
 func (v *Bar_Normal_Args) ToWire() (wire.Value, error) {
 	var (
-		fields [1]wire.Field
+		fields [2]wire.Field
 		i      int = 0
 		w      wire.Value
 		err    error
@@ -49,6 +76,14 @@ func (v *Bar_Normal_Args) ToWire() (wire.Value, error) {
 	}
 	fields[i] = wire.Field{ID: 1, Value: w}
 	i++
+	if v.StringList != nil {
+		w, err = wire.NewValueList(_List_String_ValueList(v.StringList)), error(nil)
+		if err != nil {
+			return w, err
+		}
+		fields[i] = wire.Field{ID: 2, Value: w}
+		i++
+	}
 
 	return wire.NewValueStruct(wire.Struct{Fields: fields[:i]}), nil
 }
@@ -57,6 +92,24 @@ func _BarRequest_Read(w wire.Value) (*BarRequest, error) {
 	var v BarRequest
 	err := v.FromWire(w)
 	return &v, err
+}
+
+func _List_String_Read(l wire.ValueList) ([]string, error) {
+	if l.ValueType() != wire.TBinary {
+		return nil, nil
+	}
+
+	o := make([]string, 0, l.Size())
+	err := l.ForEach(func(x wire.Value) error {
+		i, err := x.GetString(), error(nil)
+		if err != nil {
+			return err
+		}
+		o = append(o, i)
+		return nil
+	})
+	l.Close()
+	return o, err
 }
 
 // FromWire deserializes a Bar_Normal_Args struct from its Thrift-level
@@ -91,6 +144,14 @@ func (v *Bar_Normal_Args) FromWire(w wire.Value) error {
 				}
 				requestIsSet = true
 			}
+		case 2:
+			if field.Value.Type() == wire.TList {
+				v.StringList, err = _List_String_Read(field.Value.GetList())
+				if err != nil {
+					return err
+				}
+
+			}
 		}
 	}
 
@@ -108,12 +169,31 @@ func (v *Bar_Normal_Args) String() string {
 		return "<nil>"
 	}
 
-	var fields [1]string
+	var fields [2]string
 	i := 0
 	fields[i] = fmt.Sprintf("Request: %v", v.Request)
 	i++
+	if v.StringList != nil {
+		fields[i] = fmt.Sprintf("StringList: %v", v.StringList)
+		i++
+	}
 
 	return fmt.Sprintf("Bar_Normal_Args{%v}", strings.Join(fields[:i], ", "))
+}
+
+func _List_String_Equals(lhs, rhs []string) bool {
+	if len(lhs) != len(rhs) {
+		return false
+	}
+
+	for i, lv := range lhs {
+		rv := rhs[i]
+		if !(lv == rv) {
+			return false
+		}
+	}
+
+	return true
 }
 
 // Equals returns true if all the fields of this Bar_Normal_Args match the
@@ -122,6 +202,9 @@ func (v *Bar_Normal_Args) String() string {
 // This function performs a deep comparison.
 func (v *Bar_Normal_Args) Equals(rhs *Bar_Normal_Args) bool {
 	if !v.Request.Equals(rhs.Request) {
+		return false
+	}
+	if !((v.StringList == nil && rhs.StringList == nil) || (v.StringList != nil && rhs.StringList != nil && _List_String_Equals(v.StringList, rhs.StringList))) {
 		return false
 	}
 
@@ -151,6 +234,7 @@ var Bar_Normal_Helper = struct {
 	// the arguments struct for the function.
 	Args func(
 		request *BarRequest,
+		stringList []string,
 	) *Bar_Normal_Args
 
 	// IsException returns true if the given error can be thrown
@@ -191,9 +275,11 @@ var Bar_Normal_Helper = struct {
 func init() {
 	Bar_Normal_Helper.Args = func(
 		request *BarRequest,
+		stringList []string,
 	) *Bar_Normal_Args {
 		return &Bar_Normal_Args{
-			Request: request,
+			Request:    request,
+			StringList: stringList,
 		}
 	}
 
