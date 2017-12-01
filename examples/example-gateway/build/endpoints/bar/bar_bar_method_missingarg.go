@@ -160,9 +160,9 @@ func convertMissingArgBarException(
 func convertMissingArgClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	out.StringField = string(in.StringField)
-	out.IntWithRange = int32(in.IntWithRange)
-	out.IntWithoutRange = int32(in.IntWithoutRange)
+	convertToMissingArgStringFieldClientResponse(in, out)
+	convertToMissingArgIntWithRangeClientResponse(in, out)
+	convertToMissingArgIntWithoutRangeClientResponse(in, out)
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
@@ -174,4 +174,13 @@ func convertMissingArgClientResponse(in *clientsBarBar.BarResponse) *endpointsBa
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
+}
+func convertToMissingArgStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.StringField = string(in.StringField)
+}
+func convertToMissingArgIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithRange = int32(in.IntWithRange)
+}
+func convertToMissingArgIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 }

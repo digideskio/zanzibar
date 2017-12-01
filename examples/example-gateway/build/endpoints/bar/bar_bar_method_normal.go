@@ -170,12 +170,12 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		out.Request.StringField = string(in.Request.StringField)
-		out.Request.BoolField = bool(in.Request.BoolField)
+		convertToNormalStringFieldClientRequest(in, out)
+		convertToNormalBoolFieldClientRequest(in, out)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
-		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
-		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToNormalTimestampClientRequest(in, out)
+		convertToNormalEnumFieldClientRequest(in, out)
+		convertToNormalLongFieldClientRequest(in, out)
 	} else {
 		out.Request = nil
 	}
@@ -209,9 +209,9 @@ func convertNormalBarException(
 func convertNormalClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	out.StringField = string(in.StringField)
-	out.IntWithRange = int32(in.IntWithRange)
-	out.IntWithoutRange = int32(in.IntWithoutRange)
+	convertToNormalStringFieldClientResponse(in, out)
+	convertToNormalIntWithRangeClientResponse(in, out)
+	convertToNormalIntWithoutRangeClientResponse(in, out)
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
@@ -223,4 +223,13 @@ func convertNormalClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
+}
+func convertToNormalStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.StringField = string(in.StringField)
+}
+func convertToNormalIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithRange = int32(in.IntWithRange)
+}
+func convertToNormalIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 }

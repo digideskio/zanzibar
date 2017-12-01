@@ -160,8 +160,8 @@ func (w ArgWithHeadersEndpoint) Handle(
 func convertToArgWithHeadersClientRequest(in *endpointsBarBar.Bar_ArgWithHeaders_Args) *clientsBarBar.Bar_ArgWithHeaders_Args {
 	out := &clientsBarBar.Bar_ArgWithHeaders_Args{}
 
-	out.Name = string(in.Name)
-	out.UserUUID = (*string)(in.UserUUID)
+	convertToArgWithHeadersNameClientRequest(in, out)
+	convertToArgWithHeadersUserUUIDClientRequest(in, out)
 
 	return out
 }
@@ -175,9 +175,9 @@ func convertToArgWithHeadersUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWit
 func convertArgWithHeadersClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	out.StringField = string(in.StringField)
-	out.IntWithRange = int32(in.IntWithRange)
-	out.IntWithoutRange = int32(in.IntWithoutRange)
+	convertToArgWithHeadersStringFieldClientResponse(in, out)
+	convertToArgWithHeadersIntWithRangeClientResponse(in, out)
+	convertToArgWithHeadersIntWithoutRangeClientResponse(in, out)
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
@@ -189,4 +189,13 @@ func convertArgWithHeadersClientResponse(in *clientsBarBar.BarResponse) *endpoin
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
+}
+func convertToArgWithHeadersStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.StringField = string(in.StringField)
+}
+func convertToArgWithHeadersIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithRange = int32(in.IntWithRange)
+}
+func convertToArgWithHeadersIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 }

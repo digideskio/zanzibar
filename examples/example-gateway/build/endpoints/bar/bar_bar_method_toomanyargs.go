@@ -195,29 +195,29 @@ func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args)
 
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		out.Request.StringField = string(in.Request.StringField)
-		out.Request.BoolField = bool(in.Request.BoolField)
+		convertToTooManyArgsStringFieldClientRequest(in, out)
+		convertToTooManyArgsBoolFieldClientRequest(in, out)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
-		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
-		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToTooManyArgsTimestampClientRequest(in, out)
+		convertToTooManyArgsEnumFieldClientRequest(in, out)
+		convertToTooManyArgsLongFieldClientRequest(in, out)
 	} else {
 		out.Request = nil
 	}
 	if in.Foo != nil {
 		out.Foo = &clientsFooFoo.FooStruct{}
-		out.Foo.FooString = string(in.Foo.FooString)
-		out.Foo.FooI32 = (*int32)(in.Foo.FooI32)
-		out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
-		out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
-		out.Foo.FooBool = (*bool)(in.Foo.FooBool)
+		convertToTooManyArgsFooStringClientRequest(in, out)
+		convertToTooManyArgsFooI32ClientRequest(in, out)
+		convertToTooManyArgsFooI16ClientRequest(in, out)
+		convertToTooManyArgsFooDoubleClientRequest(in, out)
+		convertToTooManyArgsFooBoolClientRequest(in, out)
 		out.Foo.FooMap = make(map[string]string, len(in.Foo.FooMap))
 		for key1, value2 := range in.Foo.FooMap {
 			out.Foo.FooMap[key1] = string(value2)
 		}
 		if in.Foo.Message != nil {
 			out.Foo.Message = &clientsFooBaseBase.Message{}
-			out.Foo.Message.Body = string(in.Foo.Message.Body)
+			convertToTooManyArgsBodyClientRequest(in, out)
 		} else {
 			out.Foo.Message = nil
 		}
@@ -279,9 +279,9 @@ func convertTooManyArgsFooException(
 func convertTooManyArgsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	out.StringField = string(in.StringField)
-	out.IntWithRange = int32(in.IntWithRange)
-	out.IntWithoutRange = int32(in.IntWithoutRange)
+	convertToTooManyArgsStringFieldClientResponse(in, out)
+	convertToTooManyArgsIntWithRangeClientResponse(in, out)
+	convertToTooManyArgsIntWithoutRangeClientResponse(in, out)
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
@@ -293,4 +293,13 @@ func convertTooManyArgsClientResponse(in *clientsBarBar.BarResponse) *endpointsB
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
+}
+func convertToTooManyArgsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.StringField = string(in.StringField)
+}
+func convertToTooManyArgsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithRange = int32(in.IntWithRange)
+}
+func convertToTooManyArgsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 }

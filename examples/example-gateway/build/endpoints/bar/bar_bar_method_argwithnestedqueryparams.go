@@ -221,19 +221,19 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 
 	if in.Request != nil {
 		out.Request = &clientsBarBar.QueryParamsStruct{}
-		out.Request.Name = string(in.Request.Name)
-		out.Request.UserUUID = (*string)(in.Request.UserUUID)
-		out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
-		out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
+		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
+		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
 	} else {
 		out.Request = nil
 	}
 	if in.Opt != nil {
 		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
-		out.Opt.Name = string(in.Opt.Name)
-		out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
-		out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
-		out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
+		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
+		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
 	} else {
 		out.Opt = nil
 	}
@@ -268,9 +268,9 @@ func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar
 func convertArgWithNestedQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	out.StringField = string(in.StringField)
-	out.IntWithRange = int32(in.IntWithRange)
-	out.IntWithoutRange = int32(in.IntWithoutRange)
+	convertToArgWithNestedQueryParamsStringFieldClientResponse(in, out)
+	convertToArgWithNestedQueryParamsIntWithRangeClientResponse(in, out)
+	convertToArgWithNestedQueryParamsIntWithoutRangeClientResponse(in, out)
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
@@ -282,4 +282,13 @@ func convertArgWithNestedQueryParamsClientResponse(in *clientsBarBar.BarResponse
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
+}
+func convertToArgWithNestedQueryParamsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.StringField = string(in.StringField)
+}
+func convertToArgWithNestedQueryParamsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithRange = int32(in.IntWithRange)
+}
+func convertToArgWithNestedQueryParamsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 }

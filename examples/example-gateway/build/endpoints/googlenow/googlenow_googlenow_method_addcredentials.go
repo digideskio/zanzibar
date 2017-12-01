@@ -155,7 +155,7 @@ func (w AddCredentialsEndpoint) Handle(
 func convertToAddCredentialsClientRequest(in *endpointsGooglenowGooglenow.GoogleNow_AddCredentials_Args) *clientsGooglenowGooglenow.GoogleNowService_AddCredentials_Args {
 	out := &clientsGooglenowGooglenow.GoogleNowService_AddCredentials_Args{}
 
-	out.AuthCode = string(in.AuthCode)
+	convertToAddCredentialsAuthCodeClientRequest(in, out)
 
 	return out
 }

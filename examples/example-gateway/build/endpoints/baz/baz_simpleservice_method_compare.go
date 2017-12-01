@@ -174,17 +174,17 @@ func convertToCompareClientRequest(in *endpointsBazBaz.SimpleService_Compare_Arg
 
 	if in.Arg1 != nil {
 		out.Arg1 = &clientsBazBaz.BazRequest{}
-		out.Arg1.B1 = bool(in.Arg1.B1)
-		out.Arg1.S2 = string(in.Arg1.S2)
-		out.Arg1.I3 = int32(in.Arg1.I3)
+		convertToCompareB1ClientRequest(in, out)
+		convertToCompareS2ClientRequest(in, out)
+		convertToCompareI3ClientRequest(in, out)
 	} else {
 		out.Arg1 = nil
 	}
 	if in.Arg2 != nil {
 		out.Arg2 = &clientsBazBaz.BazRequest{}
-		out.Arg2.B1 = bool(in.Arg2.B1)
-		out.Arg2.S2 = string(in.Arg2.S2)
-		out.Arg2.I3 = int32(in.Arg2.I3)
+		convertToCompareB1ClientRequest(in, out)
+		convertToCompareS2ClientRequest(in, out)
+		convertToCompareI3ClientRequest(in, out)
 	} else {
 		out.Arg2 = nil
 	}
@@ -228,7 +228,10 @@ func convertCompareOtherAuthErr(
 func convertCompareClientResponse(in *clientsBazBase.BazResponse) *endpointsBazBaz.BazResponse {
 	out := &endpointsBazBaz.BazResponse{}
 
-	out.Message = string(in.Message)
+	convertToCompareMessageClientResponse(in, out)
 
 	return out
+}
+func convertToCompareMessageClientResponse(in *clientsBazBase.BazResponse, out *endpointsBazBaz.BazResponse) {
+	out.Message = string(in.Message)
 }

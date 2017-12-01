@@ -838,6 +838,33 @@ func (ms *MethodSpec) setDownstream(
 	return nil
 }
 
+func (ms *MethodSpec) setPrimitiveConverters(
+	typeConverter *TypeConverter,
+	downstreamMethod *MethodSpec,
+	inType string,
+	outType string,
+	requestType string,
+) {
+	for _, primitiveStruct := range typeConverter.PrimitiveStructs {
+		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(primitiveStruct.FromField.Name) + requestType
+		// different methods here
+		typeConverter.append(
+			"func ",
+			methodName,
+			"(in ", inType, ", ", "out *", outType, ") {")
+		typeConverter.GenConverterForPrimitiveOrTypedef(
+			primitiveStruct.ToField,
+			primitiveStruct.ToIdentifier,
+			primitiveStruct.FromField,
+			primitiveStruct.FromIdentifier,
+			primitiveStruct.OverriddenField,
+			primitiveStruct.OverriddenIdentifier,
+			"",
+		)
+		typeConverter.append("}")
+	}
+}
+
 func (ms *MethodSpec) setTypeConverters(
 	funcSpec *compile.FunctionSpec,
 	downstreamSpec *compile.FunctionSpec,
@@ -853,6 +880,7 @@ func (ms *MethodSpec) setTypeConverters(
 	downstreamStructType := compile.FieldGroup(downstreamSpec.ArgsSpec)
 
 	typeConverter := NewTypeConverter(h)
+	typeConverter.MethodName = ms.Name
 
 	typeConverter.append(
 		"func convertTo",
@@ -861,33 +889,14 @@ func (ms *MethodSpec) setTypeConverters(
 
 	typeConverter.append("out := &", downstreamMethod.ShortRequestType, "{}\n")
 
-	err := typeConverter.GenStructConverter(structType, downstreamStructType, reqTransforms)
+	err := typeConverter.GenStructConverter(structType, downstreamStructType, reqTransforms, "ClientRequest")
 	if err != nil {
 		return err
 	}
 	typeConverter.append("\nreturn out")
 	typeConverter.append("}")
 
-	for _, primitiveStruct := range typeConverter.PrimitiveStructs {
-		// different methods here
-		typeConverter.append(
-			"func convertTo",
-			pascalCase(ms.Name),
-			pascalCase(primitiveStruct.FromField.Name),
-			"ClientRequest",
-			"(in ", ms.RequestType, ", ", "out *", downstreamMethod.ShortRequestType, ") {")
-		typeConverter.GenConverterForPrimitiveOrTypedef(
-			primitiveStruct.ToField,
-			primitiveStruct.ToIdentifier,
-			primitiveStruct.FromField,
-			primitiveStruct.FromIdentifier,
-			primitiveStruct.OverriddenField,
-			primitiveStruct.OverriddenIdentifier,
-			"",
-		)
-		typeConverter.append("}")
-	}
-
+	ms.setPrimitiveConverters(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
 	ms.ConvertRequestGoStatements = typeConverter.GetLines()
 
 	// TODO: support non-struct return types
@@ -899,7 +908,7 @@ func (ms *MethodSpec) setTypeConverters(
 	}
 
 	respConverter := NewTypeConverter(h)
-
+	respConverter.MethodName = ms.Name
 	respConverter.append(
 		"func convert",
 		pascalCase(ms.Name),
@@ -922,12 +931,13 @@ func (ms *MethodSpec) setTypeConverters(
 		respFields = respType.(*compile.StructSpec).Fields
 		downstreamRespFields = downstreamRespType.(*compile.StructSpec).Fields
 		respConverter.append("out", " := ", "&", ms.ShortResponseType, "{}\t\n")
-		err = respConverter.GenStructConverter(downstreamRespFields, respFields, respTransforms)
+		err = respConverter.GenStructConverter(downstreamRespFields, respFields, respTransforms, "ClientResponse")
 		if err != nil {
 			return err
 		}
 	}
 	respConverter.append("\nreturn out \t}")
+	ms.setPrimitiveConverters(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
 	ms.ConvertResponseGoStatements = respConverter.GetLines()
 
 	return nil

@@ -72,6 +72,8 @@ type TypeConverter struct {
 	Helper        PackageNameResolver
 	uninitialized map[string]*fieldStruct
 	fieldCounter  int
+
+	MethodName string
 }
 
 type PrimitiveStruct struct {
@@ -153,6 +155,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	fromPrefix string,
 	indent string,
 	fieldMap map[string]FieldMapperEntry,
+    requestType string,
 ) error {
 	toIdentifier := "out." + keyPrefix
 
@@ -183,6 +186,7 @@ func (c *TypeConverter) GenConverterForStruct(
 			nil,
 			subToFields,
 			fieldMap,
+			requestType,
 		)
 		if err != nil {
 			return err
@@ -210,6 +214,7 @@ func (c *TypeConverter) GenConverterForStruct(
 		subFromFields,
 		subToFields,
 		fieldMap,
+		requestType,
 	)
 	if err != nil {
 		return err
@@ -232,6 +237,7 @@ func (c *TypeConverter) GenConverterForList(
 	overriddenIdentifier string,
 	keyPrefix string,
 	indent string,
+		requestType string,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -311,6 +317,7 @@ func (c *TypeConverter) GenConverterForList(
 			strings.TrimPrefix(fromIdentifier, "in.")+"["+indexID+"]",
 			nestedIndent,
 			nil,
+				requestType,
 		)
 		if err != nil {
 			return err
@@ -336,6 +343,7 @@ func (c *TypeConverter) GenConverterForList(
 				strings.TrimPrefix(overriddenIdentifier, "in.")+"["+indexID+"]",
 				nestedIndent,
 				nil,
+					requestType,
 			)
 			if err != nil {
 				return err
@@ -363,6 +371,7 @@ func (c *TypeConverter) GenConverterForMap(
 	overriddenIdentifier string,
 	keyPrefix string,
 	indent string,
+		requestType string,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -472,6 +481,7 @@ func (c *TypeConverter) GenConverterForMap(
 			strings.TrimPrefix(fromIdentifier, "in.")+"["+keyID+"]",
 			nestedIndent,
 			nil,
+				requestType,
 		)
 		if err != nil {
 			return err
@@ -498,6 +508,7 @@ func (c *TypeConverter) GenConverterForMap(
 				strings.TrimPrefix(overriddenIdentifier, "in.")+"["+keyID+"]",
 				nestedIndent,
 				nil,
+				requestType,
 			)
 			if err != nil {
 				return err
@@ -530,6 +541,7 @@ func (c *TypeConverter) genStructConverter(
 	fromFields []*compile.FieldSpec,
 	toFields []*compile.FieldSpec,
 	fieldMap map[string]FieldMapperEntry,
+    requestType string,
 ) error {
 
 	for i := 0; i < len(toFields); i++ {
@@ -637,19 +649,20 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenField: overriddenField,
 				OverriddenIdentifier: overriddenIdentifier,
 			})
+			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
-			err := c.GenConverterForPrimitiveOrTypedef(
-				toField,
-				toIdentifier,
-				fromField,
-				fromIdentifier,
-				overriddenField,
-				overriddenIdentifier,
-				indent,
-			)
-			if err != nil {
-				return err
-			}
+			//err := c.GenConverterForPrimitiveOrTypedef(
+			//	toField,
+			//	toIdentifier,
+			//	fromField,
+			//	fromIdentifier,
+			//	overriddenField,
+			//	overriddenIdentifier,
+			//	indent,
+			//)
+			//if err != nil {
+			//	return err
+			//}
 		case *compile.BinarySpec:
 			// TODO: handle override. Check if binarySpec can be optional.
 			c.append(toIdentifier, " = []byte(", fromIdentifier, ")")
@@ -673,6 +686,7 @@ func (c *TypeConverter) genStructConverter(
 				stFromPrefix,
 				indent,
 				fieldMap,
+				requestType,
 			)
 			if err != nil {
 				return err
@@ -688,6 +702,7 @@ func (c *TypeConverter) genStructConverter(
 				overriddenIdentifier,
 				keyPrefix,
 				indent,
+					requestType,
 			)
 			if err != nil {
 				return err
@@ -703,6 +718,7 @@ func (c *TypeConverter) genStructConverter(
 				overriddenIdentifier,
 				keyPrefix,
 				indent,
+					requestType,
 			)
 			if err != nil {
 				return err
@@ -734,6 +750,7 @@ func (c *TypeConverter) GenStructConverter(
 	fromFields []*compile.FieldSpec,
 	toFields []*compile.FieldSpec,
 	fieldMap map[string]FieldMapperEntry,
+    requestType string,
 ) error {
 	// Add compiled FieldSpecs to the FieldMapperEntry
 	fieldMap = addSpecToMap(fieldMap, fromFields, "")
@@ -747,7 +764,7 @@ func (c *TypeConverter) GenStructConverter(
 		}
 	}
 
-	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap)
+	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType)
 	if err != nil {
 		return err
 	}
