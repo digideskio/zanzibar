@@ -852,8 +852,18 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			"func ",
 			methodName,
 			"(in ", inType, ", ", "out *", outType, ") {")
-		if helperStruct.TypeName == "primitive" {
-			typeConverter.GenConverterForPrimitiveOrTypedef(
+		switch toFieldType := helperStruct.ToField.Type.(type) {
+		case
+			*compile.BoolSpec,
+			*compile.I8Spec,
+			*compile.I16Spec,
+			*compile.I32Spec,
+			*compile.EnumSpec,
+			*compile.I64Spec,
+			*compile.DoubleSpec,
+			*compile.StringSpec,
+			*compile.TypedefSpec:
+				typeConverter.GenConverterForPrimitiveOrTypedef(
 				helperStruct.ToField,
 				helperStruct.ToIdentifier,
 				helperStruct.FromField,
@@ -861,9 +871,9 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				helperStruct.OverriddenField,
 				helperStruct.OverriddenIdentifier,
 				"")
-		} else if helperStruct.TypeName == "list" {
+		case *compile.ListSpec:
 			typeConverter.GenConverterForList(
-				helperStruct.ToFieldValueSpec,
+				toFieldType,
 				helperStruct.ToField,
 				helperStruct.FromField,
 				helperStruct.OverriddenField,

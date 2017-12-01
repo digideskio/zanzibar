@@ -77,9 +77,7 @@ type TypeConverter struct {
 }
 
 type HelperFunctionStruct struct {
-	TypeName string
 	ToField *compile.FieldSpec
-	ToFieldValueSpec compile.TypeSpec
 	ToIdentifier string
 	FromField *compile.FieldSpec
 	FromIdentifier string
@@ -230,7 +228,7 @@ func (c *TypeConverter) GenConverterForStruct(
 }
 
 func (c *TypeConverter) GenConverterForList(
-	toFieldValueSpec compile.TypeSpec,
+	toFieldType *compile.ListSpec,
 	toField *compile.FieldSpec,
 	fromField *compile.FieldSpec,
 	overriddenField *compile.FieldSpec,
@@ -241,12 +239,12 @@ func (c *TypeConverter) GenConverterForList(
 	indent string,
 		requestType string,
 ) error {
-	typeName, err := c.getGoTypeName(toFieldValueSpec)
+	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
 		return err
 	}
 
-	valueStruct, isStruct := toFieldValueSpec.(*compile.StructSpec)
+	valueStruct, isStruct := toFieldType.ValueSpec.(*compile.StructSpec)
 	sourceIdentifier := fromIdentifier
 	checkOverride := false
 
@@ -644,7 +642,6 @@ func (c *TypeConverter) genStructConverter(
 			*compile.TypedefSpec:
 
 			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-				TypeName: "primitive",
 				ToField: toField,
 				ToIdentifier: toIdentifier,
 				FromField: fromField,
@@ -697,9 +694,7 @@ func (c *TypeConverter) genStructConverter(
 		case *compile.ListSpec:
 
 			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-				TypeName: "list",
 				ToField: toField,
-				ToFieldValueSpec: toFieldType.ValueSpec,
 				ToIdentifier: toIdentifier,
 				FromField: fromField,
 				FromIdentifier: fromIdentifier,
@@ -710,7 +705,7 @@ func (c *TypeConverter) genStructConverter(
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			//err := c.GenConverterForList(
-			//	toFieldType.ValueSpec,
+			//	toFieldType,
 			//	toField,
 			//	fromField,
 			//	overriddenField,
