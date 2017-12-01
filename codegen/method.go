@@ -883,6 +883,20 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				*helperStruct.KeyPrefix,
 				"",
 				requestType)
+		case *compile.MapSpec:
+			typeConverter.GenConverterForMap(
+				toFieldType,
+				helperStruct.ToField,
+				helperStruct.FromField,
+				helperStruct.OverriddenField,
+				helperStruct.ToIdentifier,
+				helperStruct.FromIdentifier,
+				helperStruct.OverriddenIdentifier,
+				*helperStruct.KeyPrefix,
+				"",
+				requestType)
+		default:
+			// nothing here for now
 		}
 		typeConverter.append("}")
 	}

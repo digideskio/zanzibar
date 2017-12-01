@@ -720,21 +720,32 @@ func (c *TypeConverter) genStructConverter(
 			//	return err
 			//}
 		case *compile.MapSpec:
-			err := c.GenConverterForMap(
-				toFieldType,
-				toField,
-				fromField,
-				overriddenField,
-				toIdentifier,
-				fromIdentifier,
-				overriddenIdentifier,
-				keyPrefix,
-				indent,
-					requestType,
-			)
-			if err != nil {
-				return err
-			}
+			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
+				ToField: toField,
+				ToIdentifier: toIdentifier,
+				FromField: fromField,
+				FromIdentifier: fromIdentifier,
+				OverriddenField: overriddenField,
+				OverriddenIdentifier: overriddenIdentifier,
+				KeyPrefix: &keyPrefix,
+			})
+			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
+
+			//err := c.GenConverterForMap(
+			//	toFieldType,
+			//	toField,
+			//	fromField,
+			//	overriddenField,
+			//	toIdentifier,
+			//	fromIdentifier,
+			//	overriddenIdentifier,
+			//	keyPrefix,
+			//	indent,
+			//		requestType,
+			//)
+			//if err != nil {
+			//	return err
+			//}
 		default:
 			// fmt.Printf("Unknown type %s for field %s \n",
 			// 	toField.Type.TypeCode().String(), toField.Name,

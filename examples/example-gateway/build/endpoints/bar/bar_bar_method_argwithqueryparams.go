@@ -179,14 +179,8 @@ func convertArgWithQueryParamsClientResponse(in *clientsBarBar.BarResponse) *end
 	convertToArgWithQueryParamsStringFieldClientResponse(in, out)
 	convertToArgWithQueryParamsIntWithRangeClientResponse(in, out)
 	convertToArgWithQueryParamsIntWithoutRangeClientResponse(in, out)
-	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
-	for key1, value2 := range in.MapIntWithRange {
-		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
-	}
-	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
-	for key3, value4 := range in.MapIntWithoutRange {
-		out.MapIntWithoutRange[key3] = int32(value4)
-	}
+	convertToArgWithQueryParamsMapIntWithRangeClientResponse(in, out)
+	convertToArgWithQueryParamsMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
@@ -199,4 +193,16 @@ func convertToArgWithQueryParamsIntWithRangeClientResponse(in *clientsBarBar.Bar
 }
 func convertToArgWithQueryParamsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.IntWithoutRange = int32(in.IntWithoutRange)
+}
+func convertToArgWithQueryParamsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
+	for key1, value2 := range in.MapIntWithRange {
+		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
+	}
+}
+func convertToArgWithQueryParamsMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
+	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
+	for key3, value4 := range in.MapIntWithoutRange {
+		out.MapIntWithoutRange[key3] = int32(value4)
+	}
 }
