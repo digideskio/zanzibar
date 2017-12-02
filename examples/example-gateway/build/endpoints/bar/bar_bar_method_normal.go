@@ -168,6 +168,7 @@ func (w NormalEndpoint) Handle(
 func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsBarBar.Bar_Normal_Args {
 	out := &clientsBarBar.Bar_Normal_Args{}
 
+	convertToNormalRequestClientRequest(in, out)
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
 		convertToNormalStringFieldClientRequest(in, out)
@@ -182,6 +183,19 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	convertToNormalStringListClientRequest(in, out)
 
 	return out
+}
+func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.Request != nil {
+		out.Request = &clientsBarBar.BarRequest{}
+		convertToNormalStringFieldClientRequest(in, out)
+		convertToNormalBoolFieldClientRequest(in, out)
+		out.Request.BinaryField = []byte(in.Request.BinaryField)
+		convertToNormalTimestampClientRequest(in, out)
+		convertToNormalEnumFieldClientRequest(in, out)
+		convertToNormalLongFieldClientRequest(in, out)
+	} else {
+		out.Request = nil
+	}
 }
 func convertToNormalStringFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	out.Request.StringField = string(in.Request.StringField)

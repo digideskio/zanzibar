@@ -84,6 +84,10 @@ type HelperFunctionStruct struct {
 	OverriddenField *compile.FieldSpec
 	OverriddenIdentifier string
 	KeyPrefix *string
+
+	StructFromType *compile.TypeSpec
+	StructFromPrefix *string
+	FieldMap map[string]FieldMapperEntry
 }
 
 // NewTypeConverter returns *TypeConverter
@@ -676,6 +680,21 @@ func (c *TypeConverter) genStructConverter(
 				stFromType = fromField.Type
 				stFromPrefix = keyPrefix + pascalCase(fromField.Name)
 			}
+
+			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
+				ToField: toField,
+				ToIdentifier: toIdentifier,
+				FromField: fromField,
+				FromIdentifier: fromIdentifier,
+				OverriddenField: overriddenField,
+				OverriddenIdentifier: overriddenIdentifier,
+				KeyPrefix: &keyPrefix,
+				StructFromType: &stFromType,
+				StructFromPrefix: &stFromPrefix,
+				FieldMap:fieldMap,
+			})
+			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
+
 			err := c.GenConverterForStruct(
 				toField.Name,
 				toFieldType,

@@ -895,6 +895,18 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				*helperStruct.KeyPrefix,
 				"",
 				requestType)
+		case *compile.StructSpec:
+			typeConverter.GenConverterForStruct(
+				helperStruct.ToField.Name,
+				toFieldType,
+				helperStruct.ToField.Required,
+				*helperStruct.StructFromType,
+				helperStruct.FromIdentifier,
+				*helperStruct.KeyPrefix + pascalCase(helperStruct.ToField.Name),
+				*helperStruct.StructFromPrefix,
+				"",
+				helperStruct.FieldMap,
+				requestType)
 		default:
 			// nothing here for now
 		}

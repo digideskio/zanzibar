@@ -219,6 +219,7 @@ func (w ArgWithNestedQueryParamsEndpoint) Handle(
 func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args) *clientsBarBar.Bar_ArgWithNestedQueryParams_Args {
 	out := &clientsBarBar.Bar_ArgWithNestedQueryParams_Args{}
 
+	convertToArgWithNestedQueryParamsRequestClientRequest(in, out)
 	if in.Request != nil {
 		out.Request = &clientsBarBar.QueryParamsStruct{}
 		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
@@ -228,6 +229,7 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 	} else {
 		out.Request = nil
 	}
+	convertToArgWithNestedQueryParamsOptClientRequest(in, out)
 	if in.Opt != nil {
 		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
 		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
@@ -240,6 +242,17 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 
 	return out
 }
+func convertToArgWithNestedQueryParamsRequestClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	if in.Request != nil {
+		out.Request = &clientsBarBar.QueryParamsStruct{}
+		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
+		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+	} else {
+		out.Request = nil
+	}
+}
 func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
 	out.Request.Name = string(in.Request.Name)
 }
@@ -251,6 +264,17 @@ func convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in *endpointsBarBar.
 }
 func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
 	out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
+}
+func convertToArgWithNestedQueryParamsOptClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
+	if in.Opt != nil {
+		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
+		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
+		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
+		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+	} else {
+		out.Opt = nil
+	}
 }
 func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
 	out.Opt.Name = string(in.Opt.Name)
