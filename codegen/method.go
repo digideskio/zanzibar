@@ -845,6 +845,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	outType string,
 	requestType string,
 ) {
+	typeConverter.ShouldPrint = true
 	for _, helperStruct := range typeConverter.HelperFunctionStructs {
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
 		// different methods here
@@ -937,7 +938,6 @@ func (ms *MethodSpec) setTypeConverters(
 		"ClientRequest(in ", ms.RequestType, ") ", downstreamMethod.RequestType, "{")
 
 	typeConverter.append("out := &", downstreamMethod.ShortRequestType, "{}\n")
-
 	err := typeConverter.GenStructConverter(structType, downstreamStructType, reqTransforms, "ClientRequest")
 	if err != nil {
 		return err
