@@ -171,12 +171,12 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	convertToNormalRequestClientRequest(in, out)
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		convertToNormalStringFieldClientRequest(in, out)
-		convertToNormalBoolFieldClientRequest(in, out)
+		out.Request.StringField = string(in.Request.StringField)
+		out.Request.BoolField = bool(in.Request.BoolField)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		convertToNormalTimestampClientRequest(in, out)
-		convertToNormalEnumFieldClientRequest(in, out)
-		convertToNormalLongFieldClientRequest(in, out)
+		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 	} else {
 		out.Request = nil
 	}
@@ -187,30 +187,15 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		convertToNormalStringFieldClientRequest(in, out)
-		convertToNormalBoolFieldClientRequest(in, out)
+		out.Request.StringField = string(in.Request.StringField)
+		out.Request.BoolField = bool(in.Request.BoolField)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		convertToNormalTimestampClientRequest(in, out)
-		convertToNormalEnumFieldClientRequest(in, out)
-		convertToNormalLongFieldClientRequest(in, out)
+		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 	} else {
 		out.Request = nil
 	}
-}
-func convertToNormalStringFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.Request.StringField = string(in.Request.StringField)
-}
-func convertToNormalBoolFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.Request.BoolField = bool(in.Request.BoolField)
-}
-func convertToNormalTimestampClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
-}
-func convertToNormalEnumFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
-}
-func convertToNormalLongFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 }
 func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	out.StringList = make([]string, len(in.StringList))
@@ -230,23 +215,14 @@ func convertNormalBarException(
 func convertNormalClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	convertToNormalStringFieldClientResponse(in, out)
-	convertToNormalIntWithRangeClientResponse(in, out)
-	convertToNormalIntWithoutRangeClientResponse(in, out)
+	out.StringField = string(in.StringField)
+	out.IntWithRange = int32(in.IntWithRange)
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 	convertToNormalMapIntWithRangeClientResponse(in, out)
 	convertToNormalMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
-}
-func convertToNormalStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.StringField = string(in.StringField)
-}
-func convertToNormalIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithRange = int32(in.IntWithRange)
-}
-func convertToNormalIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithoutRange = int32(in.IntWithoutRange)
 }
 func convertToNormalMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))

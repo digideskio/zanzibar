@@ -222,20 +222,20 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 	convertToArgWithNestedQueryParamsRequestClientRequest(in, out)
 	if in.Request != nil {
 		out.Request = &clientsBarBar.QueryParamsStruct{}
-		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
-		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+		out.Request.Name = string(in.Request.Name)
+		out.Request.UserUUID = (*string)(in.Request.UserUUID)
+		out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
+		out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
 	} else {
 		out.Request = nil
 	}
 	convertToArgWithNestedQueryParamsOptClientRequest(in, out)
 	if in.Opt != nil {
 		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
-		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
-		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+		out.Opt.Name = string(in.Opt.Name)
+		out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
+		out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
+		out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
 	} else {
 		out.Opt = nil
 	}
@@ -245,70 +245,37 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 func convertToArgWithNestedQueryParamsRequestClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.QueryParamsStruct{}
-		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
-		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+		out.Request.Name = string(in.Request.Name)
+		out.Request.UserUUID = (*string)(in.Request.UserUUID)
+		out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
+		out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
 	} else {
 		out.Request = nil
 	}
 }
-func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Request.Name = string(in.Request.Name)
-}
-func convertToArgWithNestedQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Request.UserUUID = (*string)(in.Request.UserUUID)
-}
-func convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
-}
-func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
-}
 func convertToArgWithNestedQueryParamsOptClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
 	if in.Opt != nil {
 		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
-		convertToArgWithNestedQueryParamsNameClientRequest(in, out)
-		convertToArgWithNestedQueryParamsUserUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in, out)
-		convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in, out)
+		out.Opt.Name = string(in.Opt.Name)
+		out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
+		out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
+		out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
 	} else {
 		out.Opt = nil
 	}
-}
-func convertToArgWithNestedQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Opt.Name = string(in.Opt.Name)
-}
-func convertToArgWithNestedQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
-}
-func convertToArgWithNestedQueryParamsAuthUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
-}
-func convertToArgWithNestedQueryParamsAuthUUID2ClientRequest(in *endpointsBarBar.Bar_ArgWithNestedQueryParams_Args, out *clientsBarBar.Bar_ArgWithNestedQueryParams_Args) {
-	out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
 }
 
 func convertArgWithNestedQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	convertToArgWithNestedQueryParamsStringFieldClientResponse(in, out)
-	convertToArgWithNestedQueryParamsIntWithRangeClientResponse(in, out)
-	convertToArgWithNestedQueryParamsIntWithoutRangeClientResponse(in, out)
+	out.StringField = string(in.StringField)
+	out.IntWithRange = int32(in.IntWithRange)
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 	convertToArgWithNestedQueryParamsMapIntWithRangeClientResponse(in, out)
 	convertToArgWithNestedQueryParamsMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
-}
-func convertToArgWithNestedQueryParamsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.StringField = string(in.StringField)
-}
-func convertToArgWithNestedQueryParamsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithRange = int32(in.IntWithRange)
-}
-func convertToArgWithNestedQueryParamsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithoutRange = int32(in.IntWithoutRange)
 }
 func convertToArgWithNestedQueryParamsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))

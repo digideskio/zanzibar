@@ -196,28 +196,28 @@ func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args)
 	convertToTooManyArgsRequestClientRequest(in, out)
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		convertToTooManyArgsStringFieldClientRequest(in, out)
-		convertToTooManyArgsBoolFieldClientRequest(in, out)
+		out.Request.StringField = string(in.Request.StringField)
+		out.Request.BoolField = bool(in.Request.BoolField)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		convertToTooManyArgsTimestampClientRequest(in, out)
-		convertToTooManyArgsEnumFieldClientRequest(in, out)
-		convertToTooManyArgsLongFieldClientRequest(in, out)
+		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 	} else {
 		out.Request = nil
 	}
 	convertToTooManyArgsFooClientRequest(in, out)
 	if in.Foo != nil {
 		out.Foo = &clientsFooFoo.FooStruct{}
-		convertToTooManyArgsFooStringClientRequest(in, out)
-		convertToTooManyArgsFooI32ClientRequest(in, out)
-		convertToTooManyArgsFooI16ClientRequest(in, out)
-		convertToTooManyArgsFooDoubleClientRequest(in, out)
-		convertToTooManyArgsFooBoolClientRequest(in, out)
+		out.Foo.FooString = string(in.Foo.FooString)
+		out.Foo.FooI32 = (*int32)(in.Foo.FooI32)
+		out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
+		out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
+		out.Foo.FooBool = (*bool)(in.Foo.FooBool)
 		convertToTooManyArgsFooMapClientRequest(in, out)
 		convertToTooManyArgsMessageClientRequest(in, out)
 		if in.Foo.Message != nil {
 			out.Foo.Message = &clientsFooBaseBase.Message{}
-			convertToTooManyArgsBodyClientRequest(in, out)
+			out.Foo.Message.Body = string(in.Foo.Message.Body)
 		} else {
 			out.Foo.Message = nil
 		}
@@ -230,65 +230,35 @@ func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args)
 func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
-		convertToTooManyArgsStringFieldClientRequest(in, out)
-		convertToTooManyArgsBoolFieldClientRequest(in, out)
+		out.Request.StringField = string(in.Request.StringField)
+		out.Request.BoolField = bool(in.Request.BoolField)
 		out.Request.BinaryField = []byte(in.Request.BinaryField)
-		convertToTooManyArgsTimestampClientRequest(in, out)
-		convertToTooManyArgsEnumFieldClientRequest(in, out)
-		convertToTooManyArgsLongFieldClientRequest(in, out)
+		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 	} else {
 		out.Request = nil
 	}
 }
-func convertToTooManyArgsStringFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Request.StringField = string(in.Request.StringField)
-}
-func convertToTooManyArgsBoolFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Request.BoolField = bool(in.Request.BoolField)
-}
-func convertToTooManyArgsTimestampClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
-}
-func convertToTooManyArgsEnumFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
-}
-func convertToTooManyArgsLongFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
-}
 func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Foo != nil {
 		out.Foo = &clientsFooFoo.FooStruct{}
-		convertToTooManyArgsFooStringClientRequest(in, out)
-		convertToTooManyArgsFooI32ClientRequest(in, out)
-		convertToTooManyArgsFooI16ClientRequest(in, out)
-		convertToTooManyArgsFooDoubleClientRequest(in, out)
-		convertToTooManyArgsFooBoolClientRequest(in, out)
+		out.Foo.FooString = string(in.Foo.FooString)
+		out.Foo.FooI32 = (*int32)(in.Foo.FooI32)
+		out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
+		out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
+		out.Foo.FooBool = (*bool)(in.Foo.FooBool)
 		convertToTooManyArgsFooMapClientRequest(in, out)
 		convertToTooManyArgsMessageClientRequest(in, out)
 		if in.Foo.Message != nil {
 			out.Foo.Message = &clientsFooBaseBase.Message{}
-			convertToTooManyArgsBodyClientRequest(in, out)
+			out.Foo.Message.Body = string(in.Foo.Message.Body)
 		} else {
 			out.Foo.Message = nil
 		}
 	} else {
 		out.Foo = nil
 	}
-}
-func convertToTooManyArgsFooStringClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooString = string(in.Foo.FooString)
-}
-func convertToTooManyArgsFooI32ClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooI32 = (*int32)(in.Foo.FooI32)
-}
-func convertToTooManyArgsFooI16ClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
-}
-func convertToTooManyArgsFooDoubleClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
-}
-func convertToTooManyArgsFooBoolClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooBool = (*bool)(in.Foo.FooBool)
 }
 func convertToTooManyArgsFooMapClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	out.Foo.FooMap = make(map[string]string, len(in.Foo.FooMap))
@@ -299,13 +269,10 @@ func convertToTooManyArgsFooMapClientRequest(in *endpointsBarBar.Bar_TooManyArgs
 func convertToTooManyArgsMessageClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Foo.Message != nil {
 		out.Foo.Message = &clientsFooBaseBase.Message{}
-		convertToTooManyArgsBodyClientRequest(in, out)
+		out.Foo.Message.Body = string(in.Foo.Message.Body)
 	} else {
 		out.Foo.Message = nil
 	}
-}
-func convertToTooManyArgsBodyClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.Message.Body = string(in.Foo.Message.Body)
 }
 
 func convertTooManyArgsBarException(
@@ -326,23 +293,14 @@ func convertTooManyArgsFooException(
 func convertTooManyArgsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	convertToTooManyArgsStringFieldClientResponse(in, out)
-	convertToTooManyArgsIntWithRangeClientResponse(in, out)
-	convertToTooManyArgsIntWithoutRangeClientResponse(in, out)
+	out.StringField = string(in.StringField)
+	out.IntWithRange = int32(in.IntWithRange)
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 	convertToTooManyArgsMapIntWithRangeClientResponse(in, out)
 	convertToTooManyArgsMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
-}
-func convertToTooManyArgsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.StringField = string(in.StringField)
-}
-func convertToTooManyArgsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithRange = int32(in.IntWithRange)
-}
-func convertToTooManyArgsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithoutRange = int32(in.IntWithoutRange)
 }
 func convertToTooManyArgsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))

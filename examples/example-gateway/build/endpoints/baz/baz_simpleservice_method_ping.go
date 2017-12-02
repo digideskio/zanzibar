@@ -137,10 +137,7 @@ func (w PingEndpoint) Handle(
 func convertPingClientResponse(in *clientsBazBase.BazResponse) *endpointsBazBaz.BazResponse {
 	out := &endpointsBazBaz.BazResponse{}
 
-	convertToPingMessageClientResponse(in, out)
+	out.Message = string(in.Message)
 
 	return out
-}
-func convertToPingMessageClientResponse(in *clientsBazBase.BazResponse, out *endpointsBazBaz.BazResponse) {
-	out.Message = string(in.Message)
 }

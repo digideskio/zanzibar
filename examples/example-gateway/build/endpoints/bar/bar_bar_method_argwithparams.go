@@ -150,52 +150,37 @@ func (w ArgWithParamsEndpoint) Handle(
 func convertToArgWithParamsClientRequest(in *endpointsBarBar.Bar_ArgWithParams_Args) *clientsBarBar.Bar_ArgWithParams_Args {
 	out := &clientsBarBar.Bar_ArgWithParams_Args{}
 
-	convertToArgWithParamsUUIDClientRequest(in, out)
+	out.UUID = string(in.UUID)
 	convertToArgWithParamsParamsClientRequest(in, out)
 	if in.Params != nil {
 		out.Params = &clientsBarBar.ParamsStruct{}
-		convertToArgWithParamsUserUUIDClientRequest(in, out)
+		out.Params.UserUUID = string(in.Params.UserUUID)
 	} else {
 		out.Params = nil
 	}
 
 	return out
 }
-func convertToArgWithParamsUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithParams_Args, out *clientsBarBar.Bar_ArgWithParams_Args) {
-	out.UUID = string(in.UUID)
-}
 func convertToArgWithParamsParamsClientRequest(in *endpointsBarBar.Bar_ArgWithParams_Args, out *clientsBarBar.Bar_ArgWithParams_Args) {
 	if in.Params != nil {
 		out.Params = &clientsBarBar.ParamsStruct{}
-		convertToArgWithParamsUserUUIDClientRequest(in, out)
+		out.Params.UserUUID = string(in.Params.UserUUID)
 	} else {
 		out.Params = nil
 	}
-}
-func convertToArgWithParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithParams_Args, out *clientsBarBar.Bar_ArgWithParams_Args) {
-	out.Params.UserUUID = string(in.Params.UserUUID)
 }
 
 func convertArgWithParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	convertToArgWithParamsStringFieldClientResponse(in, out)
-	convertToArgWithParamsIntWithRangeClientResponse(in, out)
-	convertToArgWithParamsIntWithoutRangeClientResponse(in, out)
+	out.StringField = string(in.StringField)
+	out.IntWithRange = int32(in.IntWithRange)
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 	convertToArgWithParamsMapIntWithRangeClientResponse(in, out)
 	convertToArgWithParamsMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
-}
-func convertToArgWithParamsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.StringField = string(in.StringField)
-}
-func convertToArgWithParamsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithRange = int32(in.IntWithRange)
-}
-func convertToArgWithParamsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithoutRange = int32(in.IntWithoutRange)
 }
 func convertToArgWithParamsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))

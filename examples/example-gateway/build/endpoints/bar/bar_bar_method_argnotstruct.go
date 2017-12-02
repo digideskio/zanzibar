@@ -156,12 +156,9 @@ func (w ArgNotStructEndpoint) Handle(
 func convertToArgNotStructClientRequest(in *endpointsBarBar.Bar_ArgNotStruct_Args) *clientsBarBar.Bar_ArgNotStruct_Args {
 	out := &clientsBarBar.Bar_ArgNotStruct_Args{}
 
-	convertToArgNotStructRequestClientRequest(in, out)
+	out.Request = string(in.Request)
 
 	return out
-}
-func convertToArgNotStructRequestClientRequest(in *endpointsBarBar.Bar_ArgNotStruct_Args, out *clientsBarBar.Bar_ArgNotStruct_Args) {
-	out.Request = string(in.Request)
 }
 
 func convertArgNotStructBarException(

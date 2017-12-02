@@ -161,38 +161,23 @@ func (w ArgWithQueryParamsEndpoint) Handle(
 func convertToArgWithQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgWithQueryParams_Args) *clientsBarBar.Bar_ArgWithQueryParams_Args {
 	out := &clientsBarBar.Bar_ArgWithQueryParams_Args{}
 
-	convertToArgWithQueryParamsNameClientRequest(in, out)
-	convertToArgWithQueryParamsUserUUIDClientRequest(in, out)
+	out.Name = string(in.Name)
+	out.UserUUID = (*string)(in.UserUUID)
 
 	return out
-}
-func convertToArgWithQueryParamsNameClientRequest(in *endpointsBarBar.Bar_ArgWithQueryParams_Args, out *clientsBarBar.Bar_ArgWithQueryParams_Args) {
-	out.Name = string(in.Name)
-}
-func convertToArgWithQueryParamsUserUUIDClientRequest(in *endpointsBarBar.Bar_ArgWithQueryParams_Args, out *clientsBarBar.Bar_ArgWithQueryParams_Args) {
-	out.UserUUID = (*string)(in.UserUUID)
 }
 
 func convertArgWithQueryParamsClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar.BarResponse {
 	out := &endpointsBarBar.BarResponse{}
 
-	convertToArgWithQueryParamsStringFieldClientResponse(in, out)
-	convertToArgWithQueryParamsIntWithRangeClientResponse(in, out)
-	convertToArgWithQueryParamsIntWithoutRangeClientResponse(in, out)
+	out.StringField = string(in.StringField)
+	out.IntWithRange = int32(in.IntWithRange)
+	out.IntWithoutRange = int32(in.IntWithoutRange)
 	convertToArgWithQueryParamsMapIntWithRangeClientResponse(in, out)
 	convertToArgWithQueryParamsMapIntWithoutRangeClientResponse(in, out)
 	out.BinaryField = []byte(in.BinaryField)
 
 	return out
-}
-func convertToArgWithQueryParamsStringFieldClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.StringField = string(in.StringField)
-}
-func convertToArgWithQueryParamsIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithRange = int32(in.IntWithRange)
-}
-func convertToArgWithQueryParamsIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
-	out.IntWithoutRange = int32(in.IntWithoutRange)
 }
 func convertToArgWithQueryParamsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))

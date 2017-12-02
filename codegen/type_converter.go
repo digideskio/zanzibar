@@ -645,28 +645,28 @@ func (c *TypeConverter) genStructConverter(
 			*compile.StringSpec,
 			*compile.TypedefSpec:
 
-			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-				ToField: toField,
-				ToIdentifier: toIdentifier,
-				FromField: fromField,
-				FromIdentifier: fromIdentifier,
-				OverriddenField: overriddenField,
-				OverriddenIdentifier: overriddenIdentifier,
-			})
-			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
+			//c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
+			//	ToField: toField,
+			//	ToIdentifier: toIdentifier,
+			//	FromField: fromField,
+			//	FromIdentifier: fromIdentifier,
+			//	OverriddenField: overriddenField,
+			//	OverriddenIdentifier: overriddenIdentifier,
+			//})
+			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
-			//err := c.GenConverterForPrimitiveOrTypedef(
-			//	toField,
-			//	toIdentifier,
-			//	fromField,
-			//	fromIdentifier,
-			//	overriddenField,
-			//	overriddenIdentifier,
-			//	indent,
-			//)
-			//if err != nil {
-			//	return err
-			//}
+			err := c.GenConverterForPrimitiveOrTypedef(
+				toField,
+				toIdentifier,
+				fromField,
+				fromIdentifier,
+				overriddenField,
+				overriddenIdentifier,
+				indent,
+			)
+			if err != nil {
+				return err
+			}
 		case *compile.BinarySpec:
 			// TODO: handle override. Check if binarySpec can be optional.
 			c.append(toIdentifier, " = []byte(", fromIdentifier, ")")
