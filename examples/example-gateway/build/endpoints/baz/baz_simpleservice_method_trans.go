@@ -177,6 +177,7 @@ func convertToTransClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args) *
 
 	return out
 }
+
 func convertToTransArg1ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg1 != nil {
 		out.Arg1 = &clientsBazBase.TransStruct{}
@@ -201,6 +202,7 @@ func convertToTransArg1ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Arg
 		out.Arg1 = nil
 	}
 }
+
 func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg1.Driver != nil {
 		out.Arg1.Driver = &clientsBazBase.NestedStruct{}
@@ -210,6 +212,7 @@ func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_A
 		out.Arg1.Driver = nil
 	}
 }
+
 func convertToTransRiderClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg1.Rider != nil {
 		out.Arg1.Rider = &clientsBazBase.NestedStruct{}
@@ -219,6 +222,7 @@ func convertToTransRiderClientRequest(in *endpointsBazBaz.SimpleService_Trans_Ar
 		out.Arg1.Rider = nil
 	}
 }
+
 func convertToTransArg2ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg2 != nil {
 		out.Arg2 = &clientsBazBase.TransStruct{}
@@ -245,6 +249,7 @@ func convertToTransArg2ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Arg
 		out.Arg2 = nil
 	}
 }
+
 func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg2.Driver != nil {
 		out.Arg2.Driver = &clientsBazBase.NestedStruct{}
@@ -254,6 +259,7 @@ func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_A
 		out.Arg2.Driver = nil
 	}
 }
+
 func convertToTransRiderClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
 	if in.Arg2.Rider != nil {
 		out.Arg2.Rider = &clientsBazBase.NestedStruct{}
@@ -290,6 +296,7 @@ func convertTransClientResponse(in *clientsBazBase.TransStruct) *endpointsBazBaz
 
 	return out
 }
+
 func convertToTransDriverClientResponse(in *clientsBazBase.TransStruct, out *endpointsBazBaz.TransStruct) {
 	if in.Driver != nil {
 		out.Driver = &endpointsBazBaz.NestedStruct{}
@@ -299,6 +306,7 @@ func convertToTransDriverClientResponse(in *clientsBazBase.TransStruct, out *end
 		out.Driver = nil
 	}
 }
+
 func convertToTransRiderClientResponse(in *clientsBazBase.TransStruct, out *endpointsBazBaz.TransStruct) {
 	if in.Rider != nil {
 		out.Rider = &endpointsBazBaz.NestedStruct{}

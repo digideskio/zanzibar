@@ -173,6 +173,7 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 
 	return out
 }
+
 func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
@@ -186,6 +187,7 @@ func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, ou
 		out.Request = nil
 	}
 }
+
 func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
 	out.StringList = make([]string, len(in.StringList))
 	for index1, value2 := range in.StringList {
@@ -213,12 +215,14 @@ func convertNormalClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar
 
 	return out
 }
+
 func convertToNormalMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
 	}
 }
+
 func convertToNormalMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
 	for key3, value4 := range in.MapIntWithoutRange {

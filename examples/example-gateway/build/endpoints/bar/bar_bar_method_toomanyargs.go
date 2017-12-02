@@ -198,6 +198,7 @@ func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args)
 
 	return out
 }
+
 func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
@@ -211,6 +212,7 @@ func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArg
 		out.Request = nil
 	}
 }
+
 func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Foo != nil {
 		out.Foo = &clientsFooFoo.FooStruct{}
@@ -231,12 +233,14 @@ func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Ar
 		out.Foo = nil
 	}
 }
+
 func convertToTooManyArgsFooMapClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	out.Foo.FooMap = make(map[string]string, len(in.Foo.FooMap))
 	for key1, value2 := range in.Foo.FooMap {
 		out.Foo.FooMap[key1] = string(value2)
 	}
 }
+
 func convertToTooManyArgsMessageClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Foo.Message != nil {
 		out.Foo.Message = &clientsFooBaseBase.Message{}
@@ -273,12 +277,14 @@ func convertTooManyArgsClientResponse(in *clientsBarBar.BarResponse) *endpointsB
 
 	return out
 }
+
 func convertToTooManyArgsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
 	}
 }
+
 func convertToTooManyArgsMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
 	for key3, value4 := range in.MapIntWithoutRange {

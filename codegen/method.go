@@ -911,7 +911,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 		default:
 			// nothing here for now
 		}
-		typeConverter.append("}")
+		typeConverter.append("}\n")
 	}
 }
 
@@ -943,7 +943,7 @@ func (ms *MethodSpec) setTypeConverters(
 		return err
 	}
 	typeConverter.append("\nreturn out")
-	typeConverter.append("}")
+	typeConverter.append("}\n")
 
 	ms.setHelperFunctionConverters(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
 	ms.ConvertRequestGoStatements = typeConverter.GetLines()
@@ -985,7 +985,7 @@ func (ms *MethodSpec) setTypeConverters(
 			return err
 		}
 	}
-	respConverter.append("\nreturn out \t}")
+	respConverter.append("\nreturn out \t}\n")
 	ms.setHelperFunctionConverters(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
 	ms.ConvertResponseGoStatements = respConverter.GetLines()
 

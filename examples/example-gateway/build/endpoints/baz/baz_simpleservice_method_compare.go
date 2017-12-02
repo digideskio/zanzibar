@@ -177,6 +177,7 @@ func convertToCompareClientRequest(in *endpointsBazBaz.SimpleService_Compare_Arg
 
 	return out
 }
+
 func convertToCompareArg1ClientRequest(in *endpointsBazBaz.SimpleService_Compare_Args, out *clientsBazBaz.SimpleService_Compare_Args) {
 	if in.Arg1 != nil {
 		out.Arg1 = &clientsBazBaz.BazRequest{}
@@ -187,6 +188,7 @@ func convertToCompareArg1ClientRequest(in *endpointsBazBaz.SimpleService_Compare
 		out.Arg1 = nil
 	}
 }
+
 func convertToCompareArg2ClientRequest(in *endpointsBazBaz.SimpleService_Compare_Args, out *clientsBazBaz.SimpleService_Compare_Args) {
 	if in.Arg2 != nil {
 		out.Arg2 = &clientsBazBaz.BazRequest{}
