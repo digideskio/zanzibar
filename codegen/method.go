@@ -27,7 +27,6 @@ import (
 
 	"github.com/pkg/errors"
 	"go.uber.org/thriftrw/compile"
-	"sort"
 )
 
 // PathSegment represents a part of the http path.
@@ -118,8 +117,6 @@ type MethodSpec struct {
 
 	// Statements for reading data out of url params (server)
 	RequestParamGoStatements []string
-
-	ExistingMethodNames []string
 }
 
 // StructSpec specifies a Go struct to be generated.
@@ -841,15 +838,6 @@ func (ms *MethodSpec) setDownstream(
 	return nil
 }
 
-func (ms *MethodSpec) isMethodPrinted(methodName string) bool {
-	sort.Strings(ms.ExistingMethodNames)
-	i := sort.SearchStrings(ms.ExistingMethodNames, methodName)
-	if i < len(ms.ExistingMethodNames) && ms.ExistingMethodNames[i] == methodName {
-		return true
-	}
-	return false
-}
-
 func (ms *MethodSpec) setHelperFunctionConverters(
 	typeConverter *TypeConverter,
 	downstreamMethod *MethodSpec,
@@ -857,13 +845,8 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	outType string,
 	requestType string,
 ) {
-	typeConverter.IsMethodCall = true
 	for _, helperStruct := range typeConverter.HelperFunctionStructs {
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
-		if ms.isMethodPrinted(methodName) {
-			continue
-		}
-		ms.ExistingMethodNames = append(ms.ExistingMethodNames, methodName)
 		// different methods here
 		typeConverter.append(
 			"func ",
@@ -880,7 +863,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			*compile.DoubleSpec,
 			*compile.StringSpec,
 			*compile.TypedefSpec:
-			typeConverter.GenConverterForPrimitiveOrTypedef(
+				typeConverter.GenConverterForPrimitiveOrTypedef(
 				helperStruct.ToField,
 				helperStruct.ToIdentifier,
 				helperStruct.FromField,
@@ -919,11 +902,11 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				helperStruct.ToField.Required,
 				*helperStruct.StructFromType,
 				helperStruct.FromIdentifier,
-				*helperStruct.KeyPrefix+pascalCase(helperStruct.ToField.Name),
+				*helperStruct.KeyPrefix + pascalCase(helperStruct.ToField.Name),
 				*helperStruct.StructFromPrefix,
 				"",
 				helperStruct.FieldMap,
-				requestType, false)
+				requestType)
 		default:
 			// nothing here for now
 		}

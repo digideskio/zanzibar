@@ -193,13 +193,6 @@ func (w TooManyArgsEndpoint) Handle(
 func convertToTooManyArgsClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args) *clientsBarBar.Bar_TooManyArgs_Args {
 	out := &clientsBarBar.Bar_TooManyArgs_Args{}
 
-	convertToTooManyArgsRequestClientRequest(in, out)
-	convertToTooManyArgsFooClientRequest(in, out)
-
-	return out
-}
-
-func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Request != nil {
 		out.Request = &clientsBarBar.BarRequest{}
 		out.Request.StringField = string(in.Request.StringField)
@@ -208,23 +201,9 @@ func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArg
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
-		convertToTooManyArgsNestedFieldClientRequest(in, out)
-		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
 	} else {
 		out.Request = nil
 	}
-}
-
-func convertToTooManyArgsNestedFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	if in.Request.NestedField != nil {
-		out.Request.NestedField = &clientsBarBar.NestedField{}
-		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
-	} else {
-		out.Request.NestedField = nil
-	}
-}
-
-func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
 	if in.Foo != nil {
 		out.Foo = &clientsFooFoo.FooStruct{}
 		out.Foo.FooString = string(in.Foo.FooString)
@@ -232,28 +211,21 @@ func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Ar
 		out.Foo.FooI16 = (*int16)(in.Foo.FooI16)
 		out.Foo.FooDouble = (*float64)(in.Foo.FooDouble)
 		out.Foo.FooBool = (*bool)(in.Foo.FooBool)
-		convertToTooManyArgsFooMapClientRequest(in, out)
-		convertToTooManyArgsMessageClientRequest(in, out)
-		out.Foo.Message.Body = string(in.Foo.Message.Body)
+		out.Foo.FooMap = make(map[string]string, len(in.Foo.FooMap))
+		for key1, value2 := range in.Foo.FooMap {
+			out.Foo.FooMap[key1] = string(value2)
+		}
+		if in.Foo.Message != nil {
+			out.Foo.Message = &clientsFooBaseBase.Message{}
+			out.Foo.Message.Body = string(in.Foo.Message.Body)
+		} else {
+			out.Foo.Message = nil
+		}
 	} else {
 		out.Foo = nil
 	}
-}
 
-func convertToTooManyArgsFooMapClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	out.Foo.FooMap = make(map[string]string, len(in.Foo.FooMap))
-	for key1, value2 := range in.Foo.FooMap {
-		out.Foo.FooMap[key1] = string(value2)
-	}
-}
-
-func convertToTooManyArgsMessageClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
-	if in.Foo.Message != nil {
-		out.Foo.Message = &clientsFooBaseBase.Message{}
-		out.Foo.Message.Body = string(in.Foo.Message.Body)
-	} else {
-		out.Foo.Message = nil
-	}
+	return out
 }
 
 func convertTooManyArgsBarException(
@@ -277,23 +249,15 @@ func convertTooManyArgsClientResponse(in *clientsBarBar.BarResponse) *endpointsB
 	out.StringField = string(in.StringField)
 	out.IntWithRange = int32(in.IntWithRange)
 	out.IntWithoutRange = int32(in.IntWithoutRange)
-	convertToTooManyArgsMapIntWithRangeClientResponse(in, out)
-	convertToTooManyArgsMapIntWithoutRangeClientResponse(in, out)
-	out.BinaryField = []byte(in.BinaryField)
-
-	return out
-}
-
-func convertToTooManyArgsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
 	}
-}
-
-func convertToTooManyArgsMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
 	for key3, value4 := range in.MapIntWithoutRange {
 		out.MapIntWithoutRange[key3] = int32(value4)
 	}
+	out.BinaryField = []byte(in.BinaryField)
+
+	return out
 }

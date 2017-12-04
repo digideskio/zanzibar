@@ -95,8 +95,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "argWithHeaders",
@@ -167,8 +166,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "argWithManyQueryParams",
@@ -272,8 +270,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "argWithNestedQueryParams",
@@ -370,8 +367,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "argWithParams",
@@ -460,8 +456,7 @@
 						"\trequestBody.Params = \u0026clientsBarBar.ParamsStruct{}",
 						"}",
 						"requestBody.Params.UserUUID = req.Params.ByName(\"user-uuid\")"
-					],
-					"ExistingMethodNames": null
+					]
 				},
 				{
 					"Name": "argWithQueryHeader",
@@ -520,8 +515,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "argWithQueryParams",
@@ -589,8 +583,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "helloWorld",
@@ -669,8 +662,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "missingArg",
@@ -747,8 +739,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "noRequest",
@@ -825,8 +816,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "normal",
@@ -903,8 +893,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "normalRecur",
@@ -983,8 +972,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "tooManyArgs",
@@ -1084,8 +1072,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				}
 			],
 			"CompileSpec": null
@@ -1150,8 +1137,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoBool",
@@ -1207,8 +1193,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoDouble",
@@ -1264,8 +1249,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoEnum",
@@ -1321,8 +1305,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoI16",
@@ -1378,8 +1361,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoI32",
@@ -1435,8 +1417,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoI32Map",
@@ -1492,8 +1473,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoI64",
@@ -1549,8 +1529,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoI8",
@@ -1606,8 +1585,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoString",
@@ -1663,8 +1641,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStringList",
@@ -1720,8 +1697,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStringMap",
@@ -1777,8 +1753,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStringSet",
@@ -1834,8 +1809,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStructList",
@@ -1891,8 +1865,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStructMap",
@@ -1948,8 +1921,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoStructSet",
@@ -2005,8 +1977,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				},
 				{
 					"Name": "echoTypedef",
@@ -2062,8 +2033,7 @@
 					"DownstreamMethod": null,
 					"ConvertRequestGoStatements": null,
 					"ConvertResponseGoStatements": null,
-					"RequestParamGoStatements": null,
-					"ExistingMethodNames": null
+					"RequestParamGoStatements": null
 				}
 			],
 			"CompileSpec": null
