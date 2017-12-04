@@ -27,6 +27,7 @@ import (
 
 	"github.com/pkg/errors"
 	"go.uber.org/thriftrw/compile"
+	"sort"
 )
 
 // PathSegment represents a part of the http path.
@@ -55,6 +56,7 @@ type HeaderFieldInfo struct {
 // MethodSpec specifies all needed parts to generate code for a method in service.
 type MethodSpec struct {
 	Name       string
+	MethodNames []string
 	HTTPMethod string
 	// Used by edge gateway to generate endpoint.
 	EndpointName string
@@ -838,6 +840,16 @@ func (ms *MethodSpec) setDownstream(
 	return nil
 }
 
+func (ms *MethodSpec) isMethodprinted(methodName string) bool {
+	sort.Strings(ms.MethodNames)
+	i := sort.SearchStrings(ms.MethodNames, methodName)
+	if i < len(ms.MethodNames) && ms.MethodNames[i] == methodName {
+		return true
+	}
+	return false
+}
+
+
 func (ms *MethodSpec) setHelperFunctionConverters(
 	typeConverter *TypeConverter,
 	downstreamMethod *MethodSpec,
@@ -846,8 +858,18 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	requestType string,
 ) {
 	typeConverter.IsMethodCall = true
-	for _, helperStruct := range typeConverter.HelperFunctionStructs {
+	count := 0
+	for count < len(typeConverter.HelperFunctionStructs) {
+		helperStruct := typeConverter.HelperFunctionStructs[count]
+		count += 1
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
+
+		if ms.isMethodprinted(methodName) {
+			continue
+		}
+
+		ms.MethodNames = append(ms.MethodNames, methodName)
+
 		// different methods here
 		typeConverter.append(
 			"func ",
@@ -883,7 +905,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				helperStruct.OverriddenIdentifier,
 				*helperStruct.KeyPrefix,
 				"",
-				requestType)
+				requestType, 0)
 		case *compile.MapSpec:
 			typeConverter.GenConverterForMap(
 				toFieldType,
@@ -895,7 +917,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				helperStruct.OverriddenIdentifier,
 				*helperStruct.KeyPrefix,
 				"",
-				requestType)
+				requestType, 0)
 		case *compile.StructSpec:
 			typeConverter.GenConverterForStruct(
 				helperStruct.ToField.Name,
@@ -907,7 +929,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				*helperStruct.StructFromPrefix,
 				"",
 				helperStruct.FieldMap,
-				requestType, false)
+				requestType, false, 0)
 		default:
 			// nothing here for now
 		}

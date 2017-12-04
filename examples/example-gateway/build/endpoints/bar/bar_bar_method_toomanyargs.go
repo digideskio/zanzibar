@@ -208,8 +208,18 @@ func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArg
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToTooManyArgsNestedFieldClientRequest(in, out)
 	} else {
 		out.Request = nil
+	}
+}
+
+func convertToTooManyArgsNestedFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	if in.Request.NestedField != nil {
+		out.Request.NestedField = &clientsBarBar.NestedField{}
+		convertToTooManyArgsNestedNestedFieldClientRequest(in, out)
+	} else {
+		out.Request.NestedField = nil
 	}
 }
 
@@ -223,7 +233,6 @@ func convertToTooManyArgsFooClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Ar
 		out.Foo.FooBool = (*bool)(in.Foo.FooBool)
 		convertToTooManyArgsFooMapClientRequest(in, out)
 		convertToTooManyArgsMessageClientRequest(in, out)
-		out.Foo.Message.Body = string(in.Foo.Message.Body)
 	} else {
 		out.Foo = nil
 	}
@@ -242,6 +251,15 @@ func convertToTooManyArgsMessageClientRequest(in *endpointsBarBar.Bar_TooManyArg
 		out.Foo.Message.Body = string(in.Foo.Message.Body)
 	} else {
 		out.Foo.Message = nil
+	}
+}
+
+func convertToTooManyArgsNestedNestedFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	if in.Request.NestedField.NestedNestedField != nil {
+		out.Request.NestedField.NestedNestedField = &clientsBarBar.NestedNestedField{}
+		out.Request.NestedField.NestedNestedField.Name = (*string)(in.Request.NestedField.NestedNestedField.Name)
+	} else {
+		out.Request.NestedField.NestedNestedField = nil
 	}
 }
 

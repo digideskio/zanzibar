@@ -125,12 +125,13 @@ func (v *BarException) Error() string {
 }
 
 type BarRequest struct {
-	StringField string    `json:"stringField,required"`
-	BoolField   bool      `json:"boolField,required"`
-	BinaryField []byte    `json:"binaryField,required"`
-	Timestamp   Timestamp `json:"timestamp,required"`
-	EnumField   Fruit     `json:"enumField,required"`
-	LongField   Long      `json:"longField,required"`
+	StringField string       `json:"stringField,required"`
+	BoolField   bool         `json:"boolField,required"`
+	BinaryField []byte       `json:"binaryField,required"`
+	Timestamp   Timestamp    `json:"timestamp,required"`
+	EnumField   Fruit        `json:"enumField,required"`
+	LongField   Long         `json:"longField,required"`
+	NestedField *NestedField `json:"nestedField,omitempty"`
 }
 
 // ToWire translates a BarRequest struct into a Thrift-level intermediate
@@ -150,7 +151,7 @@ type BarRequest struct {
 //   }
 func (v *BarRequest) ToWire() (wire.Value, error) {
 	var (
-		fields [6]wire.Field
+		fields [7]wire.Field
 		i      int = 0
 		w      wire.Value
 		err    error
@@ -199,6 +200,14 @@ func (v *BarRequest) ToWire() (wire.Value, error) {
 	}
 	fields[i] = wire.Field{ID: 6, Value: w}
 	i++
+	if v.NestedField != nil {
+		w, err = v.NestedField.ToWire()
+		if err != nil {
+			return w, err
+		}
+		fields[i] = wire.Field{ID: 7, Value: w}
+		i++
+	}
 
 	return wire.NewValueStruct(wire.Struct{Fields: fields[:i]}), nil
 }
@@ -219,6 +228,12 @@ func _Long_Read(w wire.Value) (Long, error) {
 	var x Long
 	err := x.FromWire(w)
 	return x, err
+}
+
+func _NestedField_Read(w wire.Value) (*NestedField, error) {
+	var v NestedField
+	err := v.FromWire(w)
+	return &v, err
 }
 
 // FromWire deserializes a BarRequest struct from its Thrift-level
@@ -298,6 +313,14 @@ func (v *BarRequest) FromWire(w wire.Value) error {
 				}
 				longFieldIsSet = true
 			}
+		case 7:
+			if field.Value.Type() == wire.TStruct {
+				v.NestedField, err = _NestedField_Read(field.Value)
+				if err != nil {
+					return err
+				}
+
+			}
 		}
 	}
 
@@ -335,7 +358,7 @@ func (v *BarRequest) String() string {
 		return "<nil>"
 	}
 
-	var fields [6]string
+	var fields [7]string
 	i := 0
 	fields[i] = fmt.Sprintf("StringField: %v", v.StringField)
 	i++
@@ -349,6 +372,10 @@ func (v *BarRequest) String() string {
 	i++
 	fields[i] = fmt.Sprintf("LongField: %v", v.LongField)
 	i++
+	if v.NestedField != nil {
+		fields[i] = fmt.Sprintf("NestedField: %v", v.NestedField)
+		i++
+	}
 
 	return fmt.Sprintf("BarRequest{%v}", strings.Join(fields[:i], ", "))
 }
@@ -374,6 +401,9 @@ func (v *BarRequest) Equals(rhs *BarRequest) bool {
 		return false
 	}
 	if !(v.LongField == rhs.LongField) {
+		return false
+	}
+	if !((v.NestedField == nil && rhs.NestedField == nil) || (v.NestedField != nil && rhs.NestedField != nil && v.NestedField.Equals(rhs.NestedField))) {
 		return false
 	}
 
@@ -1279,6 +1309,242 @@ func (lhs Long) Equals(rhs Long) bool {
 	return (lhs == rhs)
 }
 
+type NestedField struct {
+	NestedNestedField *NestedNestedField `json:"nestedNestedField,omitempty"`
+}
+
+// ToWire translates a NestedField struct into a Thrift-level intermediate
+// representation. This intermediate representation may be serialized
+// into bytes using a ThriftRW protocol implementation.
+//
+// An error is returned if the struct or any of its fields failed to
+// validate.
+//
+//   x, err := v.ToWire()
+//   if err != nil {
+//     return err
+//   }
+//
+//   if err := binaryProtocol.Encode(x, writer); err != nil {
+//     return err
+//   }
+func (v *NestedField) ToWire() (wire.Value, error) {
+	var (
+		fields [1]wire.Field
+		i      int = 0
+		w      wire.Value
+		err    error
+	)
+
+	if v.NestedNestedField != nil {
+		w, err = v.NestedNestedField.ToWire()
+		if err != nil {
+			return w, err
+		}
+		fields[i] = wire.Field{ID: 1, Value: w}
+		i++
+	}
+
+	return wire.NewValueStruct(wire.Struct{Fields: fields[:i]}), nil
+}
+
+func _NestedNestedField_Read(w wire.Value) (*NestedNestedField, error) {
+	var v NestedNestedField
+	err := v.FromWire(w)
+	return &v, err
+}
+
+// FromWire deserializes a NestedField struct from its Thrift-level
+// representation. The Thrift-level representation may be obtained
+// from a ThriftRW protocol implementation.
+//
+// An error is returned if we were unable to build a NestedField struct
+// from the provided intermediate representation.
+//
+//   x, err := binaryProtocol.Decode(reader, wire.TStruct)
+//   if err != nil {
+//     return nil, err
+//   }
+//
+//   var v NestedField
+//   if err := v.FromWire(x); err != nil {
+//     return nil, err
+//   }
+//   return &v, nil
+func (v *NestedField) FromWire(w wire.Value) error {
+	var err error
+
+	for _, field := range w.GetStruct().Fields {
+		switch field.ID {
+		case 1:
+			if field.Value.Type() == wire.TStruct {
+				v.NestedNestedField, err = _NestedNestedField_Read(field.Value)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+	}
+
+	return nil
+}
+
+// String returns a readable string representation of a NestedField
+// struct.
+func (v *NestedField) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+
+	var fields [1]string
+	i := 0
+	if v.NestedNestedField != nil {
+		fields[i] = fmt.Sprintf("NestedNestedField: %v", v.NestedNestedField)
+		i++
+	}
+
+	return fmt.Sprintf("NestedField{%v}", strings.Join(fields[:i], ", "))
+}
+
+// Equals returns true if all the fields of this NestedField match the
+// provided NestedField.
+//
+// This function performs a deep comparison.
+func (v *NestedField) Equals(rhs *NestedField) bool {
+	if !((v.NestedNestedField == nil && rhs.NestedNestedField == nil) || (v.NestedNestedField != nil && rhs.NestedNestedField != nil && v.NestedNestedField.Equals(rhs.NestedNestedField))) {
+		return false
+	}
+
+	return true
+}
+
+type NestedNestedField struct {
+	Name *string `json:"name,omitempty"`
+}
+
+// ToWire translates a NestedNestedField struct into a Thrift-level intermediate
+// representation. This intermediate representation may be serialized
+// into bytes using a ThriftRW protocol implementation.
+//
+// An error is returned if the struct or any of its fields failed to
+// validate.
+//
+//   x, err := v.ToWire()
+//   if err != nil {
+//     return err
+//   }
+//
+//   if err := binaryProtocol.Encode(x, writer); err != nil {
+//     return err
+//   }
+func (v *NestedNestedField) ToWire() (wire.Value, error) {
+	var (
+		fields [1]wire.Field
+		i      int = 0
+		w      wire.Value
+		err    error
+	)
+
+	if v.Name != nil {
+		w, err = wire.NewValueString(*(v.Name)), error(nil)
+		if err != nil {
+			return w, err
+		}
+		fields[i] = wire.Field{ID: 1, Value: w}
+		i++
+	}
+
+	return wire.NewValueStruct(wire.Struct{Fields: fields[:i]}), nil
+}
+
+// FromWire deserializes a NestedNestedField struct from its Thrift-level
+// representation. The Thrift-level representation may be obtained
+// from a ThriftRW protocol implementation.
+//
+// An error is returned if we were unable to build a NestedNestedField struct
+// from the provided intermediate representation.
+//
+//   x, err := binaryProtocol.Decode(reader, wire.TStruct)
+//   if err != nil {
+//     return nil, err
+//   }
+//
+//   var v NestedNestedField
+//   if err := v.FromWire(x); err != nil {
+//     return nil, err
+//   }
+//   return &v, nil
+func (v *NestedNestedField) FromWire(w wire.Value) error {
+	var err error
+
+	for _, field := range w.GetStruct().Fields {
+		switch field.ID {
+		case 1:
+			if field.Value.Type() == wire.TBinary {
+				var x string
+				x, err = field.Value.GetString(), error(nil)
+				v.Name = &x
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+	}
+
+	return nil
+}
+
+// String returns a readable string representation of a NestedNestedField
+// struct.
+func (v *NestedNestedField) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+
+	var fields [1]string
+	i := 0
+	if v.Name != nil {
+		fields[i] = fmt.Sprintf("Name: %v", *(v.Name))
+		i++
+	}
+
+	return fmt.Sprintf("NestedNestedField{%v}", strings.Join(fields[:i], ", "))
+}
+
+func _String_EqualsPtr(lhs, rhs *string) bool {
+	if lhs != nil && rhs != nil {
+
+		x := *lhs
+		y := *rhs
+		return (x == y)
+	}
+	return lhs == nil && rhs == nil
+}
+
+// Equals returns true if all the fields of this NestedNestedField match the
+// provided NestedNestedField.
+//
+// This function performs a deep comparison.
+func (v *NestedNestedField) Equals(rhs *NestedNestedField) bool {
+	if !_String_EqualsPtr(v.Name, rhs.Name) {
+		return false
+	}
+
+	return true
+}
+
+// GetName returns the value of Name if it is set or its
+// zero value if it is unset.
+func (v *NestedNestedField) GetName() (o string) {
+	if v.Name != nil {
+		return *v.Name
+	}
+
+	return
+}
+
 type ParamsStruct struct {
 	UserUUID string `json:"userUUID,required"`
 }
@@ -1546,16 +1812,6 @@ func (v *QueryParamsOptsStruct) String() string {
 	}
 
 	return fmt.Sprintf("QueryParamsOptsStruct{%v}", strings.Join(fields[:i], ", "))
-}
-
-func _String_EqualsPtr(lhs, rhs *string) bool {
-	if lhs != nil && rhs != nil {
-
-		x := *lhs
-		y := *rhs
-		return (x == y)
-	}
-	return lhs == nil && rhs == nil
 }
 
 // Equals returns true if all the fields of this QueryParamsOptsStruct match the

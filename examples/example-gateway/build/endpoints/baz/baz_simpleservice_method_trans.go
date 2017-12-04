@@ -183,11 +183,7 @@ func convertToTransArg1ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Arg
 		out.Arg1 = &clientsBazBase.TransStruct{}
 		out.Arg1.Message = string(in.Arg1.Message)
 		convertToTransDriverClientRequest(in, out)
-		out.Arg1.Driver.Msg = string(in.Arg1.Driver.Msg)
-		out.Arg1.Driver.Check = (*int32)(in.Arg1.Driver.Check)
 		convertToTransRiderClientRequest(in, out)
-		out.Arg1.Rider.Msg = string(in.Arg1.Rider.Msg)
-		out.Arg1.Rider.Check = (*int32)(in.Arg1.Rider.Check)
 	} else {
 		out.Arg1 = nil
 	}
@@ -218,37 +214,9 @@ func convertToTransArg2ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Arg
 		out.Arg2 = &clientsBazBase.TransStruct{}
 		out.Arg2.Message = string(in.Arg2.Message)
 		convertToTransDriverClientRequest(in, out)
-		out.Arg2.Driver.Msg = string(in.Arg2.Driver.Msg)
-		out.Arg2.Driver.Check = (*int32)(in.Arg2.Driver.Check)
 		convertToTransRiderClientRequest(in, out)
-		if in.Arg1 != nil && in.Arg1.Driver != nil {
-			out.Arg2.Rider.Msg = string(in.Arg1.Driver.Msg)
-		}
-		out.Arg2.Rider.Check = (*int32)(in.Arg2.Rider.Check)
 	} else {
 		out.Arg2 = nil
-	}
-}
-
-func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
-	if in.Arg2.Driver != nil {
-		out.Arg2.Driver = &clientsBazBase.NestedStruct{}
-		out.Arg2.Driver.Msg = string(in.Arg2.Driver.Msg)
-		out.Arg2.Driver.Check = (*int32)(in.Arg2.Driver.Check)
-	} else {
-		out.Arg2.Driver = nil
-	}
-}
-
-func convertToTransRiderClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
-	if in.Arg2.Rider != nil {
-		out.Arg2.Rider = &clientsBazBase.NestedStruct{}
-		if in.Arg1 != nil && in.Arg1.Driver != nil {
-			out.Arg2.Rider.Msg = string(in.Arg1.Driver.Msg)
-		}
-		out.Arg2.Rider.Check = (*int32)(in.Arg2.Rider.Check)
-	} else {
-		out.Arg2.Rider = nil
 	}
 }
 

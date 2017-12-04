@@ -162,6 +162,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
     isRecursiveCall bool,
+    level int,
 ) error {
 	toIdentifier := "out." + keyPrefix
 
@@ -194,6 +195,7 @@ func (c *TypeConverter) GenConverterForStruct(
 			fieldMap,
 			requestType,
 			true,
+			level + 1,
 		)
 		if err != nil {
 			return err
@@ -221,7 +223,7 @@ func (c *TypeConverter) GenConverterForStruct(
 		subToFields,
 		fieldMap,
 		requestType,
-		true)
+		true, level + 1)
 		if err != nil {
 			return err
 		}
@@ -241,6 +243,7 @@ func (c *TypeConverter) GenConverterForStruct(
 		fieldMap,
 		requestType,
 		true,
+		level + 1,
 	)
 	if err != nil {
 		return err
@@ -264,6 +267,7 @@ func (c *TypeConverter) GenConverterForList(
 	keyPrefix string,
 	indent string,
 		requestType string,
+			level int,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -345,6 +349,7 @@ func (c *TypeConverter) GenConverterForList(
 			nil,
 				requestType,
 					false,
+						level + 1,
 		)
 		if err != nil {
 			return err
@@ -372,6 +377,7 @@ func (c *TypeConverter) GenConverterForList(
 				nil,
 					requestType,
 						false,
+							level + 1,
 			)
 			if err != nil {
 				return err
@@ -400,6 +406,7 @@ func (c *TypeConverter) GenConverterForMap(
 	keyPrefix string,
 	indent string,
 		requestType string,
+			level int,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -511,6 +518,7 @@ func (c *TypeConverter) GenConverterForMap(
 			nil,
 				requestType,
 					false,
+						level + 1,
 		)
 		if err != nil {
 			return err
@@ -539,6 +547,7 @@ func (c *TypeConverter) GenConverterForMap(
 				nil,
 				requestType,
 					false,
+						level + 1,
 			)
 			if err != nil {
 				return err
@@ -573,6 +582,7 @@ func (c *TypeConverter) genStructConverter(
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
     isRecursiveCall bool, // determine if the call is from struct
+    level int,
 ) error {
 
 	for i := 0; i < len(toFields); i++ {
@@ -681,7 +691,7 @@ func (c *TypeConverter) genStructConverter(
 			//	OverriddenIdentifier: overriddenIdentifier,
 			//})
 			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
-			if isRecursiveCall && !c.IsMethodCall {
+			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
 
@@ -699,7 +709,7 @@ func (c *TypeConverter) genStructConverter(
 			}
 		case *compile.BinarySpec:
 			// TODO: handle override. Check if binarySpec can be optional.
-			if isRecursiveCall && !c.IsMethodCall {
+			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
 			c.append(toIdentifier, " = []byte(", fromIdentifier, ")")
@@ -727,7 +737,7 @@ func (c *TypeConverter) genStructConverter(
 				FieldMap:fieldMap,
 			})
 
-			if isRecursiveCall && !c.IsMethodCall {
+			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
@@ -744,6 +754,7 @@ func (c *TypeConverter) genStructConverter(
 				fieldMap,
 				requestType,
 				isRecursiveCall,
+				level,
 			)
 			if err != nil {
 				return err
@@ -758,7 +769,7 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
-			if isRecursiveCall && !c.IsMethodCall {
+			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
@@ -788,7 +799,7 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
-			if isRecursiveCall && !c.IsMethodCall {
+			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
@@ -849,7 +860,7 @@ func (c *TypeConverter) GenStructConverter(
 		}
 	}
 
-	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType, false)
+	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType, false, 0)
 	if err != nil {
 		return err
 	}

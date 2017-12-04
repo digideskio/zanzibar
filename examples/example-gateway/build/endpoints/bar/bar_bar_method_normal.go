@@ -183,8 +183,18 @@ func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, ou
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToNormalNestedFieldClientRequest(in, out)
 	} else {
 		out.Request = nil
+	}
+}
+
+func convertToNormalNestedFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.Request.NestedField != nil {
+		out.Request.NestedField = &clientsBarBar.NestedField{}
+		convertToNormalNestedNestedFieldClientRequest(in, out)
+	} else {
+		out.Request.NestedField = nil
 	}
 }
 
@@ -192,6 +202,15 @@ func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args,
 	out.StringList = make([]string, len(in.StringList))
 	for index1, value2 := range in.StringList {
 		out.StringList[index1] = string(value2)
+	}
+}
+
+func convertToNormalNestedNestedFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.Request.NestedField.NestedNestedField != nil {
+		out.Request.NestedField.NestedNestedField = &clientsBarBar.NestedNestedField{}
+		out.Request.NestedField.NestedNestedField.Name = (*string)(in.Request.NestedField.NestedNestedField.Name)
+	} else {
+		out.Request.NestedField.NestedNestedField = nil
 	}
 }
 
