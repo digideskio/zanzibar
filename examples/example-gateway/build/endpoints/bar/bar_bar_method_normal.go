@@ -170,6 +170,7 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 
 	convertToNormalRequestClientRequest(in, out)
 	convertToNormalStringListClientRequest(in, out)
+	convertToNormalRecurRequestClientRequest(in, out)
 
 	return out
 }
@@ -183,18 +184,8 @@ func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, ou
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
-		convertToNormalNestedFieldClientRequest(in, out)
 	} else {
 		out.Request = nil
-	}
-}
-
-func convertToNormalNestedFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	if in.Request.NestedField != nil {
-		out.Request.NestedField = &clientsBarBar.NestedField{}
-		convertToNormalNestedNestedFieldClientRequest(in, out)
-	} else {
-		out.Request.NestedField = nil
 	}
 }
 
@@ -205,12 +196,23 @@ func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args,
 	}
 }
 
-func convertToNormalNestedNestedFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	if in.Request.NestedField.NestedNestedField != nil {
-		out.Request.NestedField.NestedNestedField = &clientsBarBar.NestedNestedField{}
-		out.Request.NestedField.NestedNestedField.Name = (*string)(in.Request.NestedField.NestedNestedField.Name)
+func convertToNormalRecurRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.RecurRequest != nil {
+		out.RecurRequest = &clientsBarBar.BarRequestRecur{}
+		out.RecurRequest.Name = string(in.RecurRequest.Name)
+		convertToNormalRecurClientRequest(in, out)
 	} else {
-		out.Request.NestedField.NestedNestedField = nil
+		out.RecurRequest = nil
+	}
+}
+
+func convertToNormalRecurClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.RecurRequest.Recur != nil {
+		out.RecurRequest.Recur = &clientsBarBar.BarRequestRecur{}
+		out.RecurRequest.Recur.Name = string(in.RecurRequest.Recur.Name)
+		convertToNormalRecurClientRequest(in, out)
+	} else {
+		out.RecurRequest.Recur = nil
 	}
 }
 

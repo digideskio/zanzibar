@@ -11,14 +11,6 @@ enum Fruit {
     BANANA
 }
 
-struct NestedNestedField {
-    1: optional string name
-}
-
-struct NestedField {
-    1: optional NestedNestedField nestedNestedField
-}
-
 struct BarRequest {
     1: required string stringField
     2: required bool boolField
@@ -26,7 +18,6 @@ struct BarRequest {
     4: required Timestamp timestamp
     5: required Fruit enumField
     6: required Long longField
-    7: optional NestedField nestedField
 }
 
 struct BarResponse {
@@ -41,6 +32,11 @@ struct BarResponse {
         zanzibar.ignore.integer.range = "true"
     )
     6: required binary binaryField
+}
+
+struct BarRequestRecur {
+    1: required string name
+    2: optional BarRequestRecur recur
 }
 
 struct QueryParamsStruct {
@@ -81,6 +77,7 @@ service Bar {
     BarResponse normal (
         1: required BarRequest request
         2: optional list<string> stringList
+        3: required BarRequestRecur recurRequest
     ) throws (
         1: BarException barException (zanzibar.http.status = "403")
     ) (
