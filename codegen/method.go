@@ -845,6 +845,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	outType string,
 	requestType string,
 ) {
+	typeConverter.IsMethodCall = true
 	for _, helperStruct := range typeConverter.HelperFunctionStructs {
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
 		// different methods here
@@ -906,7 +907,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				*helperStruct.StructFromPrefix,
 				"",
 				helperStruct.FieldMap,
-				requestType)
+				requestType, false)
 		default:
 			// nothing here for now
 		}

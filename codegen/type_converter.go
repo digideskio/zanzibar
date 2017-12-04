@@ -74,6 +74,7 @@ type TypeConverter struct {
 	fieldCounter          int
 
 	MethodName string
+	IsMethodCall bool
 }
 
 type HelperFunctionStruct struct {
@@ -160,6 +161,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	indent string,
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
+    isRecursiveCall bool,
 ) error {
 	toIdentifier := "out." + keyPrefix
 
@@ -173,7 +175,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	if fromFieldType == nil {
 		//  in the direct assignment we do a nil check on fromField here. its hard for unknown number of transforms
 		//  initialize the toField with an empty struct only if it's required, otherwise send to uninitialized map
-		if toRequired {
+		if toRequired && !isRecursiveCall {
 			c.append(indent, toIdentifier, " = &", typeName, "{}")
 		} else {
 			c.uninitialized[toIdentifier] = &fieldStruct{
@@ -191,6 +193,7 @@ func (c *TypeConverter) GenConverterForStruct(
 			subToFields,
 			fieldMap,
 			requestType,
+			true,
 		)
 		if err != nil {
 			return err
@@ -207,10 +210,28 @@ func (c *TypeConverter) GenConverterForStruct(
 		)
 	}
 
+	subFromFields := fromFieldStruct.Fields
+
+	if isRecursiveCall || !c.IsMethodCall {
+		err = c.genStructConverter(
+		keyPrefix+".",
+		fromPrefix+".",
+		indent+"\t",
+		subFromFields,
+		subToFields,
+		fieldMap,
+		requestType,
+		true)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	// if not recursive call print the thing and make it recursive call
 	c.append(indent, "if ", fromIdentifier, " != nil {")
 	c.append(indent, "\t", toIdentifier, " = &", typeName, "{}")
 
-	subFromFields := fromFieldStruct.Fields
 	err = c.genStructConverter(
 		keyPrefix+".",
 		fromPrefix+".",
@@ -219,6 +240,7 @@ func (c *TypeConverter) GenConverterForStruct(
 		subToFields,
 		fieldMap,
 		requestType,
+		true,
 	)
 	if err != nil {
 		return err
@@ -322,6 +344,7 @@ func (c *TypeConverter) GenConverterForList(
 			nestedIndent,
 			nil,
 				requestType,
+					false,
 		)
 		if err != nil {
 			return err
@@ -348,6 +371,7 @@ func (c *TypeConverter) GenConverterForList(
 				nestedIndent,
 				nil,
 					requestType,
+						false,
 			)
 			if err != nil {
 				return err
@@ -486,6 +510,7 @@ func (c *TypeConverter) GenConverterForMap(
 			nestedIndent,
 			nil,
 				requestType,
+					false,
 		)
 		if err != nil {
 			return err
@@ -513,6 +538,7 @@ func (c *TypeConverter) GenConverterForMap(
 				nestedIndent,
 				nil,
 				requestType,
+					false,
 			)
 			if err != nil {
 				return err
@@ -546,6 +572,7 @@ func (c *TypeConverter) genStructConverter(
 	toFields []*compile.FieldSpec,
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
+    isRecursiveCall bool, // determine if the call is from struct
 ) error {
 
 	for i := 0; i < len(toFields); i++ {
@@ -654,6 +681,9 @@ func (c *TypeConverter) genStructConverter(
 			//	OverriddenIdentifier: overriddenIdentifier,
 			//})
 			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
+			if isRecursiveCall && !c.IsMethodCall {
+				continue
+			}
 
 			err := c.GenConverterForPrimitiveOrTypedef(
 				toField,
@@ -669,6 +699,9 @@ func (c *TypeConverter) genStructConverter(
 			}
 		case *compile.BinarySpec:
 			// TODO: handle override. Check if binarySpec can be optional.
+			if isRecursiveCall && !c.IsMethodCall {
+				continue
+			}
 			c.append(toIdentifier, " = []byte(", fromIdentifier, ")")
 
 		case *compile.StructSpec:
@@ -693,6 +726,10 @@ func (c *TypeConverter) genStructConverter(
 				StructFromPrefix: &stFromPrefix,
 				FieldMap:fieldMap,
 			})
+
+			if isRecursiveCall && !c.IsMethodCall {
+				continue
+			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			err := c.GenConverterForStruct(
@@ -706,12 +743,12 @@ func (c *TypeConverter) genStructConverter(
 				indent,
 				fieldMap,
 				requestType,
+				isRecursiveCall,
 			)
 			if err != nil {
 				return err
 			}
 		case *compile.ListSpec:
-
 			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
 				ToField: toField,
 				ToIdentifier: toIdentifier,
@@ -721,6 +758,9 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
+			if isRecursiveCall && !c.IsMethodCall {
+				continue
+			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			//err := c.GenConverterForList(
@@ -748,6 +788,9 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
+			if isRecursiveCall && !c.IsMethodCall {
+				continue
+			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			//err := c.GenConverterForMap(
@@ -806,7 +849,7 @@ func (c *TypeConverter) GenStructConverter(
 		}
 	}
 
-	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType)
+	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType, false)
 	if err != nil {
 		return err
 	}

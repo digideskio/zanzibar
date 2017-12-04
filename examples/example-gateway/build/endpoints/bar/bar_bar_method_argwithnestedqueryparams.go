@@ -220,25 +220,7 @@ func convertToArgWithNestedQueryParamsClientRequest(in *endpointsBarBar.Bar_ArgW
 	out := &clientsBarBar.Bar_ArgWithNestedQueryParams_Args{}
 
 	convertToArgWithNestedQueryParamsRequestClientRequest(in, out)
-	if in.Request != nil {
-		out.Request = &clientsBarBar.QueryParamsStruct{}
-		out.Request.Name = string(in.Request.Name)
-		out.Request.UserUUID = (*string)(in.Request.UserUUID)
-		out.Request.AuthUUID = (*string)(in.Request.AuthUUID)
-		out.Request.AuthUUID2 = (*string)(in.Request.AuthUUID2)
-	} else {
-		out.Request = nil
-	}
 	convertToArgWithNestedQueryParamsOptClientRequest(in, out)
-	if in.Opt != nil {
-		out.Opt = &clientsBarBar.QueryParamsOptsStruct{}
-		out.Opt.Name = string(in.Opt.Name)
-		out.Opt.UserUUID = (*string)(in.Opt.UserUUID)
-		out.Opt.AuthUUID = (*string)(in.Opt.AuthUUID)
-		out.Opt.AuthUUID2 = (*string)(in.Opt.AuthUUID2)
-	} else {
-		out.Opt = nil
-	}
 
 	return out
 }
