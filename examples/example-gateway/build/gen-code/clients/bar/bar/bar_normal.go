@@ -16,6 +16,7 @@ import (
 type Bar_Normal_Args struct {
 	Request    *BarRequest `json:"request,required"`
 	StringList []string    `json:"stringList,omitempty"`
+	Request2   *BarRequest `json:"request2,required"`
 }
 
 // ToWire translates a Bar_Normal_Args struct into a Thrift-level intermediate
@@ -35,7 +36,7 @@ type Bar_Normal_Args struct {
 //   }
 func (v *Bar_Normal_Args) ToWire() (wire.Value, error) {
 	var (
-		fields [2]wire.Field
+		fields [3]wire.Field
 		i      int = 0
 		w      wire.Value
 		err    error
@@ -58,6 +59,15 @@ func (v *Bar_Normal_Args) ToWire() (wire.Value, error) {
 		fields[i] = wire.Field{ID: 2, Value: w}
 		i++
 	}
+	if v.Request2 == nil {
+		return w, errors.New("field Request2 of Bar_Normal_Args is required")
+	}
+	w, err = v.Request2.ToWire()
+	if err != nil {
+		return w, err
+	}
+	fields[i] = wire.Field{ID: 3, Value: w}
+	i++
 
 	return wire.NewValueStruct(wire.Struct{Fields: fields[:i]}), nil
 }
@@ -90,6 +100,8 @@ func (v *Bar_Normal_Args) FromWire(w wire.Value) error {
 
 	requestIsSet := false
 
+	request2IsSet := false
+
 	for _, field := range w.GetStruct().Fields {
 		switch field.ID {
 		case 1:
@@ -108,11 +120,23 @@ func (v *Bar_Normal_Args) FromWire(w wire.Value) error {
 				}
 
 			}
+		case 3:
+			if field.Value.Type() == wire.TStruct {
+				v.Request2, err = _BarRequest_Read(field.Value)
+				if err != nil {
+					return err
+				}
+				request2IsSet = true
+			}
 		}
 	}
 
 	if !requestIsSet {
 		return errors.New("field Request of Bar_Normal_Args is required")
+	}
+
+	if !request2IsSet {
+		return errors.New("field Request2 of Bar_Normal_Args is required")
 	}
 
 	return nil
@@ -125,7 +149,7 @@ func (v *Bar_Normal_Args) String() string {
 		return "<nil>"
 	}
 
-	var fields [2]string
+	var fields [3]string
 	i := 0
 	fields[i] = fmt.Sprintf("Request: %v", v.Request)
 	i++
@@ -133,6 +157,8 @@ func (v *Bar_Normal_Args) String() string {
 		fields[i] = fmt.Sprintf("StringList: %v", v.StringList)
 		i++
 	}
+	fields[i] = fmt.Sprintf("Request2: %v", v.Request2)
+	i++
 
 	return fmt.Sprintf("Bar_Normal_Args{%v}", strings.Join(fields[:i], ", "))
 }
@@ -146,6 +172,9 @@ func (v *Bar_Normal_Args) Equals(rhs *Bar_Normal_Args) bool {
 		return false
 	}
 	if !((v.StringList == nil && rhs.StringList == nil) || (v.StringList != nil && rhs.StringList != nil && _List_String_Equals(v.StringList, rhs.StringList))) {
+		return false
+	}
+	if !v.Request2.Equals(rhs.Request2) {
 		return false
 	}
 
@@ -176,6 +205,7 @@ var Bar_Normal_Helper = struct {
 	Args func(
 		request *BarRequest,
 		stringList []string,
+		request2 *BarRequest,
 	) *Bar_Normal_Args
 
 	// IsException returns true if the given error can be thrown
@@ -217,10 +247,12 @@ func init() {
 	Bar_Normal_Helper.Args = func(
 		request *BarRequest,
 		stringList []string,
+		request2 *BarRequest,
 	) *Bar_Normal_Args {
 		return &Bar_Normal_Args{
 			Request:    request,
 			StringList: stringList,
+			Request2:   request2,
 		}
 	}
 

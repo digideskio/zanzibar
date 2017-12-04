@@ -230,28 +230,6 @@ func convertToTransArg2ClientRequest(in *endpointsBazBaz.SimpleService_Trans_Arg
 	}
 }
 
-func convertToTransDriverClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
-	if in.Arg2.Driver != nil {
-		out.Arg2.Driver = &clientsBazBase.NestedStruct{}
-		out.Arg2.Driver.Msg = string(in.Arg2.Driver.Msg)
-		out.Arg2.Driver.Check = (*int32)(in.Arg2.Driver.Check)
-	} else {
-		out.Arg2.Driver = nil
-	}
-}
-
-func convertToTransRiderClientRequest(in *endpointsBazBaz.SimpleService_Trans_Args, out *clientsBazBaz.SimpleService_Trans_Args) {
-	if in.Arg2.Rider != nil {
-		out.Arg2.Rider = &clientsBazBase.NestedStruct{}
-		if in.Arg1 != nil && in.Arg1.Driver != nil {
-			out.Arg2.Rider.Msg = string(in.Arg1.Driver.Msg)
-		}
-		out.Arg2.Rider.Check = (*int32)(in.Arg2.Rider.Check)
-	} else {
-		out.Arg2.Rider = nil
-	}
-}
-
 func convertTransAuthErr(
 	clientError *clientsBazBaz.AuthErr,
 ) *endpointsBazBaz.AuthErr {

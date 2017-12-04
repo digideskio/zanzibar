@@ -27,6 +27,7 @@ import (
 
 	"github.com/pkg/errors"
 	"go.uber.org/thriftrw/compile"
+	"sort"
 )
 
 // PathSegment represents a part of the http path.
@@ -117,6 +118,8 @@ type MethodSpec struct {
 
 	// Statements for reading data out of url params (server)
 	RequestParamGoStatements []string
+
+	ExistingMethodNames []string
 }
 
 // StructSpec specifies a Go struct to be generated.
@@ -838,6 +841,15 @@ func (ms *MethodSpec) setDownstream(
 	return nil
 }
 
+func (ms *MethodSpec) isMethodPrinted(methodName string) bool {
+	sort.Strings(ms.ExistingMethodNames)
+	i := sort.SearchStrings(ms.ExistingMethodNames, methodName)
+	if i < len(ms.ExistingMethodNames) && ms.ExistingMethodNames[i] == methodName {
+		return true
+	}
+	return false
+}
+
 func (ms *MethodSpec) setHelperFunctionConverters(
 	typeConverter *TypeConverter,
 	downstreamMethod *MethodSpec,
@@ -848,6 +860,10 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	typeConverter.IsMethodCall = true
 	for _, helperStruct := range typeConverter.HelperFunctionStructs {
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
+		if ms.isMethodPrinted(methodName) {
+			continue
+		}
+		ms.ExistingMethodNames = append(ms.ExistingMethodNames, methodName)
 		// different methods here
 		typeConverter.append(
 			"func ",

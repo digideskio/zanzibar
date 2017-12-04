@@ -208,8 +208,19 @@ func convertToTooManyArgsRequestClientRequest(in *endpointsBarBar.Bar_TooManyArg
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToTooManyArgsNestedFieldClientRequest(in, out)
+		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
 	} else {
 		out.Request = nil
+	}
+}
+
+func convertToTooManyArgsNestedFieldClientRequest(in *endpointsBarBar.Bar_TooManyArgs_Args, out *clientsBarBar.Bar_TooManyArgs_Args) {
+	if in.Request.NestedField != nil {
+		out.Request.NestedField = &clientsBarBar.NestedField{}
+		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
+	} else {
+		out.Request.NestedField = nil
 	}
 }
 

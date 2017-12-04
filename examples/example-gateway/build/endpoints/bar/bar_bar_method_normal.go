@@ -170,6 +170,7 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 
 	convertToNormalRequestClientRequest(in, out)
 	convertToNormalStringListClientRequest(in, out)
+	convertToNormalRequest2ClientRequest(in, out)
 
 	return out
 }
@@ -183,8 +184,19 @@ func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, ou
 		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
 		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+		convertToNormalNestedFieldClientRequest(in, out)
+		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
 	} else {
 		out.Request = nil
+	}
+}
+
+func convertToNormalNestedFieldClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.Request.NestedField != nil {
+		out.Request.NestedField = &clientsBarBar.NestedField{}
+		out.Request.NestedField.Name = string(in.Request.NestedField.Name)
+	} else {
+		out.Request.NestedField = nil
 	}
 }
 
@@ -192,6 +204,22 @@ func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args,
 	out.StringList = make([]string, len(in.StringList))
 	for index1, value2 := range in.StringList {
 		out.StringList[index1] = string(value2)
+	}
+}
+
+func convertToNormalRequest2ClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
+	if in.Request2 != nil {
+		out.Request2 = &clientsBarBar.BarRequest{}
+		out.Request2.StringField = string(in.Request2.StringField)
+		out.Request2.BoolField = bool(in.Request2.BoolField)
+		out.Request2.BinaryField = []byte(in.Request2.BinaryField)
+		out.Request2.Timestamp = clientsBarBar.Timestamp(in.Request2.Timestamp)
+		out.Request2.EnumField = clientsBarBar.Fruit(in.Request2.EnumField)
+		out.Request2.LongField = clientsBarBar.Long(in.Request2.LongField)
+		convertToNormalNestedFieldClientRequest(in, out)
+		out.Request2.NestedField.Name = string(in.Request2.NestedField.Name)
+	} else {
+		out.Request2 = nil
 	}
 }
 
