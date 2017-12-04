@@ -876,30 +876,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			methodName,
 			"(in ", inType, ", ", "out *", outType, ") {")
 		switch toFieldType := helperStruct.ToField.Type.(type) {
-		case *compile.ListSpec:
-			typeConverter.GenConverterForList(
-				toFieldType,
-				helperStruct.ToField,
-				helperStruct.FromField,
-				helperStruct.OverriddenField,
-				helperStruct.ToIdentifier,
-				helperStruct.FromIdentifier,
-				helperStruct.OverriddenIdentifier,
-				*helperStruct.KeyPrefix,
-				"",
-				requestType, 0)
-		case *compile.MapSpec:
-			typeConverter.GenConverterForMap(
-				toFieldType,
-				helperStruct.ToField,
-				helperStruct.FromField,
-				helperStruct.OverriddenField,
-				helperStruct.ToIdentifier,
-				helperStruct.FromIdentifier,
-				helperStruct.OverriddenIdentifier,
-				*helperStruct.KeyPrefix,
-				"",
-				requestType, 0)
+
 		case *compile.StructSpec:
 			typeConverter.GenConverterForStruct(
 				helperStruct.ToField.Name,

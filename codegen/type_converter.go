@@ -266,8 +266,8 @@ func (c *TypeConverter) GenConverterForList(
 	overriddenIdentifier string,
 	keyPrefix string,
 	indent string,
-		requestType string,
-			level int,
+	requestType string,
+	level int,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -682,15 +682,6 @@ func (c *TypeConverter) genStructConverter(
 			*compile.StringSpec,
 			*compile.TypedefSpec:
 
-			//c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-			//	ToField: toField,
-			//	ToIdentifier: toIdentifier,
-			//	FromField: fromField,
-			//	FromIdentifier: fromIdentifier,
-			//	OverriddenField: overriddenField,
-			//	OverriddenIdentifier: overriddenIdentifier,
-			//})
-			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
@@ -760,65 +751,45 @@ func (c *TypeConverter) genStructConverter(
 				return err
 			}
 		case *compile.ListSpec:
-			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-				ToField: toField,
-				ToIdentifier: toIdentifier,
-				FromField: fromField,
-				FromIdentifier: fromIdentifier,
-				OverriddenField: overriddenField,
-				OverriddenIdentifier: overriddenIdentifier,
-				KeyPrefix: &keyPrefix,
-			})
 			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
-			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
-
-			//err := c.GenConverterForList(
-			//	toFieldType,
-			//	toField,
-			//	fromField,
-			//	overriddenField,
-			//	toIdentifier,
-			//	fromIdentifier,
-			//	overriddenIdentifier,
-			//	keyPrefix,
-			//	indent,
-			//	requestType,
-			//)
-			//if err != nil {
-			//	return err
-			//}
+			err := c.GenConverterForList(
+				toFieldType,
+				toField,
+				fromField,
+				overriddenField,
+				toIdentifier,
+				fromIdentifier,
+				overriddenIdentifier,
+				keyPrefix,
+				indent,
+				requestType,
+				level,
+			)
+			if err != nil {
+				return err
+			}
 		case *compile.MapSpec:
-			c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-				ToField: toField,
-				ToIdentifier: toIdentifier,
-				FromField: fromField,
-				FromIdentifier: fromIdentifier,
-				OverriddenField: overriddenField,
-				OverriddenIdentifier: overriddenIdentifier,
-				KeyPrefix: &keyPrefix,
-			})
 			if (isRecursiveCall && !c.IsMethodCall) || level > 1 {
 				continue
 			}
-			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
-
-			//err := c.GenConverterForMap(
-			//	toFieldType,
-			//	toField,
-			//	fromField,
-			//	overriddenField,
-			//	toIdentifier,
-			//	fromIdentifier,
-			//	overriddenIdentifier,
-			//	keyPrefix,
-			//	indent,
-			//		requestType,
-			//)
-			//if err != nil {
-			//	return err
-			//}
+			err := c.GenConverterForMap(
+				toFieldType,
+				toField,
+				fromField,
+				overriddenField,
+				toIdentifier,
+				fromIdentifier,
+				overriddenIdentifier,
+				keyPrefix,
+				indent,
+				requestType,
+				level,
+			)
+			if err != nil {
+				return err
+			}
 		default:
 			// fmt.Printf("Unknown type %s for field %s \n",
 			// 	toField.Type.TypeCode().String(), toField.Name,

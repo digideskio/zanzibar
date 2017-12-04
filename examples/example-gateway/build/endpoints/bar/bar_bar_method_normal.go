@@ -169,7 +169,10 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	out := &clientsBarBar.Bar_Normal_Args{}
 
 	convertToNormalRequestClientRequest(in, out)
-	convertToNormalStringListClientRequest(in, out)
+	out.StringList = make([]string, len(in.StringList))
+	for index1, value2 := range in.StringList {
+		out.StringList[index1] = string(value2)
+	}
 	convertToNormalRecurRequestClientRequest(in, out)
 
 	return out
@@ -186,13 +189,6 @@ func convertToNormalRequestClientRequest(in *endpointsBarBar.Bar_Normal_Args, ou
 		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
 	} else {
 		out.Request = nil
-	}
-}
-
-func convertToNormalStringListClientRequest(in *endpointsBarBar.Bar_Normal_Args, out *clientsBarBar.Bar_Normal_Args) {
-	out.StringList = make([]string, len(in.StringList))
-	for index1, value2 := range in.StringList {
-		out.StringList[index1] = string(value2)
 	}
 }
 
@@ -230,23 +226,15 @@ func convertNormalClientResponse(in *clientsBarBar.BarResponse) *endpointsBarBar
 	out.StringField = string(in.StringField)
 	out.IntWithRange = int32(in.IntWithRange)
 	out.IntWithoutRange = int32(in.IntWithoutRange)
-	convertToNormalMapIntWithRangeClientResponse(in, out)
-	convertToNormalMapIntWithoutRangeClientResponse(in, out)
-	out.BinaryField = []byte(in.BinaryField)
-
-	return out
-}
-
-func convertToNormalMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
 	}
-}
-
-func convertToNormalMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
 	for key3, value4 := range in.MapIntWithoutRange {
 		out.MapIntWithoutRange[key3] = int32(value4)
 	}
+	out.BinaryField = []byte(in.BinaryField)
+
+	return out
 }

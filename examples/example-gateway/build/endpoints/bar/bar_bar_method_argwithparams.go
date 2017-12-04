@@ -171,23 +171,15 @@ func convertArgWithParamsClientResponse(in *clientsBarBar.BarResponse) *endpoint
 	out.StringField = string(in.StringField)
 	out.IntWithRange = int32(in.IntWithRange)
 	out.IntWithoutRange = int32(in.IntWithoutRange)
-	convertToArgWithParamsMapIntWithRangeClientResponse(in, out)
-	convertToArgWithParamsMapIntWithoutRangeClientResponse(in, out)
-	out.BinaryField = []byte(in.BinaryField)
-
-	return out
-}
-
-func convertToArgWithParamsMapIntWithRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithRange = make(map[endpointsBarBar.UUID]int32, len(in.MapIntWithRange))
 	for key1, value2 := range in.MapIntWithRange {
 		out.MapIntWithRange[endpointsBarBar.UUID(key1)] = int32(value2)
 	}
-}
-
-func convertToArgWithParamsMapIntWithoutRangeClientResponse(in *clientsBarBar.BarResponse, out *endpointsBarBar.BarResponse) {
 	out.MapIntWithoutRange = make(map[string]int32, len(in.MapIntWithoutRange))
 	for key3, value4 := range in.MapIntWithoutRange {
 		out.MapIntWithoutRange[key3] = int32(value4)
 	}
+	out.BinaryField = []byte(in.BinaryField)
+
+	return out
 }
