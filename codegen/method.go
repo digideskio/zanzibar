@@ -858,16 +858,16 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	requestType string,
 ) {
 	typeConverter.IsMethodCall = true
-	count := 0
-	for count < len(typeConverter.HelperFunctionStructs) {
-		helperStruct := typeConverter.HelperFunctionStructs[count]
-		count += 1
+	index := 0
+	for index < len(typeConverter.HelperFunctionStructs) {
+		helperStruct := typeConverter.HelperFunctionStructs[index]
+		index += 1
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
 
+		// dedup method
 		if ms.isMethodprinted(methodName) {
 			continue
 		}
-
 		ms.MethodNames = append(ms.MethodNames, methodName)
 
 		// different methods here
@@ -876,24 +876,6 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			methodName,
 			"(in ", inType, ", ", "out *", outType, ") {")
 		switch toFieldType := helperStruct.ToField.Type.(type) {
-		case
-			*compile.BoolSpec,
-			*compile.I8Spec,
-			*compile.I16Spec,
-			*compile.I32Spec,
-			*compile.EnumSpec,
-			*compile.I64Spec,
-			*compile.DoubleSpec,
-			*compile.StringSpec,
-			*compile.TypedefSpec:
-				typeConverter.GenConverterForPrimitiveOrTypedef(
-				helperStruct.ToField,
-				helperStruct.ToIdentifier,
-				helperStruct.FromField,
-				helperStruct.FromIdentifier,
-				helperStruct.OverriddenField,
-				helperStruct.OverriddenIdentifier,
-				"")
 		case *compile.ListSpec:
 			typeConverter.GenConverterForList(
 				toFieldType,
