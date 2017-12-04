@@ -73,23 +73,23 @@ type TypeConverter struct {
 	uninitialized         map[string]*fieldStruct
 	fieldCounter          int
 
-	MethodName string
+	MethodName 	 string
 	IsMethodCall bool
 }
 
 // HelperFunctionStruct is the struct containing all helper params
 type HelperFunctionStruct struct {
-	ToField *compile.FieldSpec
-	ToIdentifier string
-	FromField *compile.FieldSpec
-	FromIdentifier string
-	OverriddenField *compile.FieldSpec
-	OverriddenIdentifier string
-	KeyPrefix *string
+	ToField              *compile.FieldSpec
+	ToIdentifier         string
+	FromField            *compile.FieldSpec
+	FromIdentifier       string
+	OverriddenField      *compile.FieldSpec
+ 	OverriddenIdentifier string
+	KeyPrefix            *string
 
-	StructFromType *compile.TypeSpec
+	StructFromType   *compile.TypeSpec
 	StructFromPrefix *string
-	FieldMap map[string]FieldMapperEntry
+	FieldMap         map[string]FieldMapperEntry
 }
 
 // NewTypeConverter returns *TypeConverter
@@ -163,7 +163,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	indent string,
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
-    isRecursiveCall bool,
+	isRecursiveCall bool,
 ) error {
 	toIdentifier := "out." + keyPrefix
 
@@ -216,14 +216,14 @@ func (c *TypeConverter) GenConverterForStruct(
 
 	if isRecursiveCall || !c.IsMethodCall {
 		err = c.genStructConverter(
-		keyPrefix+".",
-		fromPrefix+".",
-		indent+"\t",
-		subFromFields,
-		subToFields,
-		fieldMap,
-		requestType,
-		true)
+				keyPrefix+".",
+				fromPrefix+".",
+				indent+"\t",
+				subFromFields,
+				subToFields,
+				fieldMap,
+				requestType,
+				true)
 		if err != nil {
 			return err
 		}
@@ -346,8 +346,8 @@ func (c *TypeConverter) GenConverterForList(
 			strings.TrimPrefix(fromIdentifier, "in.")+"["+indexID+"]",
 			nestedIndent,
 			nil,
-				requestType,
-					false,
+			requestType,
+			false,
 		)
 		if err != nil {
 			return err
@@ -373,8 +373,8 @@ func (c *TypeConverter) GenConverterForList(
 				strings.TrimPrefix(overriddenIdentifier, "in.")+"["+indexID+"]",
 				nestedIndent,
 				nil,
-					requestType,
-						false,
+				requestType,
+				false,
 			)
 			if err != nil {
 				return err
@@ -403,7 +403,7 @@ func (c *TypeConverter) GenConverterForMap(
 	overriddenIdentifier string,
 	keyPrefix string,
 	indent string,
-		requestType string,
+	requestType string,
 ) error {
 	typeName, err := c.getGoTypeName(toFieldType.ValueSpec)
 	if err != nil {
@@ -513,8 +513,8 @@ func (c *TypeConverter) GenConverterForMap(
 			strings.TrimPrefix(fromIdentifier, "in.")+"["+keyID+"]",
 			nestedIndent,
 			nil,
-				requestType,
-					false,
+			requestType,
+			false,
 		)
 		if err != nil {
 			return err
@@ -542,7 +542,7 @@ func (c *TypeConverter) GenConverterForMap(
 				nestedIndent,
 				nil,
 				requestType,
-					false,
+				false,
 			)
 			if err != nil {
 				return err

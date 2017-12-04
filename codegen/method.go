@@ -880,7 +880,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			*compile.DoubleSpec,
 			*compile.StringSpec,
 			*compile.TypedefSpec:
-				typeConverter.GenConverterForPrimitiveOrTypedef(
+			typeConverter.GenConverterForPrimitiveOrTypedef(
 				helperStruct.ToField,
 				helperStruct.ToIdentifier,
 				helperStruct.FromField,
@@ -919,7 +919,7 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 				helperStruct.ToField.Required,
 				*helperStruct.StructFromType,
 				helperStruct.FromIdentifier,
-				*helperStruct.KeyPrefix + pascalCase(helperStruct.ToField.Name),
+				*helperStruct.KeyPrefix+pascalCase(helperStruct.ToField.Name),
 				*helperStruct.StructFromPrefix,
 				"",
 				helperStruct.FieldMap,
