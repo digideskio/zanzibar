@@ -676,15 +676,6 @@ func (c *TypeConverter) genStructConverter(
 			*compile.StringSpec,
 			*compile.TypedefSpec:
 
-			//c.HelperFunctionStructs = append(c.HelperFunctionStructs, HelperFunctionStruct{
-			//	ToField: toField,
-			//	ToIdentifier: toIdentifier,
-			//	FromField: fromField,
-			//	FromIdentifier: fromIdentifier,
-			//	OverriddenField: overriddenField,
-			//	OverriddenIdentifier: overriddenIdentifier,
-			//})
-			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 			if isRecursiveCall && !c.IsMethodCall {
 				continue
 			}
