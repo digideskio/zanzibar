@@ -137,7 +137,7 @@ install-wrk:
 
 .PHONY: test
 test:
-	@make test-only
+	@make test-update
 
 .PHONY: test-update
 test-update:
