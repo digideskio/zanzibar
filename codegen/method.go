@@ -850,7 +850,7 @@ func (ms *MethodSpec) isMethodprinted(methodName string) bool {
 }
 
 
-func (ms *MethodSpec) setHelperFunctionConverters(
+func (ms *MethodSpec) genStructHelperFunctions(
 	typeConverter *TypeConverter,
 	downstreamMethod *MethodSpec,
 	inType string,
@@ -875,23 +875,22 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 			"func ",
 			methodName,
 			"(in ", inType, ", ", "out *", outType, ") {")
-		switch toFieldType := helperStruct.ToField.Type.(type) {
 
-		case *compile.StructSpec:
-			typeConverter.GenConverterForStruct(
-				helperStruct.ToField.Name,
-				toFieldType,
-				helperStruct.ToField.Required,
-				*helperStruct.StructFromType,
-				helperStruct.FromIdentifier,
-				*helperStruct.KeyPrefix + pascalCase(helperStruct.ToField.Name),
-				*helperStruct.StructFromPrefix,
-				"",
-				helperStruct.FieldMap,
-				requestType, false, 0)
-		default:
-			// nothing here for now
+		toFieldType, ok := helperStruct.ToField.Type.(*compile.StructSpec)
+		if !ok {
+			continue
 		}
+		typeConverter.GenConverterForStruct(
+			helperStruct.ToField.Name,
+			toFieldType,
+			helperStruct.ToField.Required,
+			*helperStruct.StructFromType,
+			helperStruct.FromIdentifier,
+			*helperStruct.KeyPrefix + pascalCase(helperStruct.ToField.Name),
+			*helperStruct.StructFromPrefix,
+			"",
+			helperStruct.FieldMap,
+			requestType, false, 0)
 		typeConverter.append("}\n")
 	}
 }
@@ -926,7 +925,7 @@ func (ms *MethodSpec) setTypeConverters(
 	typeConverter.append("\nreturn out")
 	typeConverter.append("}\n")
 
-	ms.setHelperFunctionConverters(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
+	ms.genStructHelperFunctions(typeConverter, downstreamMethod, ms.RequestType, downstreamMethod.ShortRequestType, "ClientRequest")
 	ms.ConvertRequestGoStatements = typeConverter.GetLines()
 
 	// TODO: support non-struct return types
@@ -967,7 +966,7 @@ func (ms *MethodSpec) setTypeConverters(
 		}
 	}
 	respConverter.append("\nreturn out \t}\n")
-	ms.setHelperFunctionConverters(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
+	ms.genStructHelperFunctions(respConverter, downstreamMethod, downstreamMethod.ResponseType, ms.ShortResponseType, "ClientResponse")
 	ms.ConvertResponseGoStatements = respConverter.GetLines()
 
 	return nil
