@@ -77,6 +77,7 @@ type TypeConverter struct {
 	IsMethodCall bool
 }
 
+// HelperFunctionStruct is the struct containing all helper params
 type HelperFunctionStruct struct {
 	ToField *compile.FieldSpec
 	ToIdentifier string
@@ -150,6 +151,7 @@ func (c *TypeConverter) getIdentifierName(fieldType compile.TypeSpec) (string, e
 	return t, nil
 }
 
+// GenConverterForStruct is the get converter for struct
 func (c *TypeConverter) GenConverterForStruct(
 	toFieldName string,
 	toFieldType *compile.StructSpec,
@@ -253,6 +255,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	return nil
 }
 
+// GenConverterForList is the get converter for list
 func (c *TypeConverter) GenConverterForList(
 	toFieldType *compile.ListSpec,
 	toField *compile.FieldSpec,
@@ -389,6 +392,7 @@ func (c *TypeConverter) GenConverterForList(
 	return nil
 }
 
+// GenConverterForMap is the get converter for map
 func (c *TypeConverter) GenConverterForMap(
 	toFieldType *compile.MapSpec,
 	toField *compile.FieldSpec,
@@ -990,6 +994,7 @@ func (c *TypeConverter) assignWithOverride(
 	c.append(defaultAssign.Generate(indent, c.uninitialized))
 }
 
+// GenConverterForPrimitiveOrTypedef is the get converter for primitive or typedef
 func (c *TypeConverter) GenConverterForPrimitiveOrTypedef(
 	toField *compile.FieldSpec,
 	toIdentifier string,
