@@ -845,7 +845,6 @@ func (ms *MethodSpec) setHelperFunctionConverters(
 	outType string,
 	requestType string,
 ) {
-	typeConverter.ShouldPrint = true
 	for _, helperStruct := range typeConverter.HelperFunctionStructs {
 		methodName := "convertTo" + pascalCase(ms.Name) + pascalCase(helperStruct.FromField.Name) + requestType
 		// different methods here

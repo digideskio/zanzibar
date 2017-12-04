@@ -74,7 +74,6 @@ type TypeConverter struct {
 	fieldCounter          int
 
 	MethodName string
-	ShouldPrint bool
 }
 
 type HelperFunctionStruct struct {
@@ -174,7 +173,7 @@ func (c *TypeConverter) GenConverterForStruct(
 	if fromFieldType == nil {
 		//  in the direct assignment we do a nil check on fromField here. its hard for unknown number of transforms
 		//  initialize the toField with an empty struct only if it's required, otherwise send to uninitialized map
-		if toRequired || c.shouldPrint(false) {
+		if toRequired {
 			c.append(indent, toIdentifier, " = &", typeName, "{}")
 		} else {
 			c.uninitialized[toIdentifier] = &fieldStruct{
@@ -192,7 +191,6 @@ func (c *TypeConverter) GenConverterForStruct(
 			subToFields,
 			fieldMap,
 			requestType,
-			false,
 		)
 		if err != nil {
 			return err
@@ -209,10 +207,8 @@ func (c *TypeConverter) GenConverterForStruct(
 		)
 	}
 
-	if c.shouldPrint(false) {
-		c.append(indent, "if ", fromIdentifier, " != nil {")
-		c.append(indent, "\t", toIdentifier, " = &", typeName, "{}")
-	}
+	c.append(indent, "if ", fromIdentifier, " != nil {")
+	c.append(indent, "\t", toIdentifier, " = &", typeName, "{}")
 
 	subFromFields := fromFieldStruct.Fields
 	err = c.genStructConverter(
@@ -223,17 +219,14 @@ func (c *TypeConverter) GenConverterForStruct(
 		subToFields,
 		fieldMap,
 		requestType,
-		false,
 	)
 	if err != nil {
 		return err
 	}
 
-	if c.shouldPrint(false) {
-		c.append(indent, "} else {")
-		c.append(indent, "\t", toIdentifier, " = nil")
-		c.append(indent, "}")
-	}
+	c.append(indent, "} else {")
+	c.append(indent, "\t", toIdentifier, " = nil")
+	c.append(indent, "}")
 
 	return nil
 }
@@ -537,10 +530,6 @@ func (c *TypeConverter) GenConverterForMap(
 	return nil
 }
 
-func (c *TypeConverter) shouldPrint(isTop bool) bool {
-	return isTop || c.ShouldPrint
-}
-
 // recursive function to walk a DFS on toFields and try to assign fromFields or fieldMap tranforms
 //  generated code is appended as we traverse the toFields thrift type structure
 //  keyPrefix - the identifier (path) of the current position in the "to" struct
@@ -557,7 +546,6 @@ func (c *TypeConverter) genStructConverter(
 	toFields []*compile.FieldSpec,
 	fieldMap map[string]FieldMapperEntry,
     requestType string,
-    isTop bool,
 ) error {
 
 	for i := 0; i < len(toFields); i++ {
@@ -666,9 +654,6 @@ func (c *TypeConverter) genStructConverter(
 			//	OverriddenIdentifier: overriddenIdentifier,
 			//})
 			//c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
-			if !c.shouldPrint(isTop) {
-				continue
-			}
 
 			err := c.GenConverterForPrimitiveOrTypedef(
 				toField,
@@ -683,9 +668,6 @@ func (c *TypeConverter) genStructConverter(
 				return err
 			}
 		case *compile.BinarySpec:
-			if !c.shouldPrint(isTop) {
-				continue
-			}
 			// TODO: handle override. Check if binarySpec can be optional.
 			c.append(toIdentifier, " = []byte(", fromIdentifier, ")")
 
@@ -711,9 +693,7 @@ func (c *TypeConverter) genStructConverter(
 				StructFromPrefix: &stFromPrefix,
 				FieldMap:fieldMap,
 			})
-			if c.shouldPrint(isTop) {
-				c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
-			}
+			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			err := c.GenConverterForStruct(
 				toField.Name,
@@ -741,9 +721,6 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
-			if !c.shouldPrint(isTop) {
-				continue
-			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			//err := c.GenConverterForList(
@@ -771,9 +748,6 @@ func (c *TypeConverter) genStructConverter(
 				OverriddenIdentifier: overriddenIdentifier,
 				KeyPrefix: &keyPrefix,
 			})
-			if !c.shouldPrint(isTop) {
-				continue
-			}
 			c.append("convertTo", pascalCase(c.MethodName), pascalCase(fromField.Name), requestType, "(in, out)")
 
 			//err := c.GenConverterForMap(
@@ -832,7 +806,7 @@ func (c *TypeConverter) GenStructConverter(
 		}
 	}
 
-	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType, true)
+	err := c.genStructConverter("", "", "", fromFields, toFields, fieldMap, requestType)
 	if err != nil {
 		return err
 	}

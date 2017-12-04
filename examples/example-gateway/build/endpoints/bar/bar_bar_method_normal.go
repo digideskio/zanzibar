@@ -169,6 +169,17 @@ func convertToNormalClientRequest(in *endpointsBarBar.Bar_Normal_Args) *clientsB
 	out := &clientsBarBar.Bar_Normal_Args{}
 
 	convertToNormalRequestClientRequest(in, out)
+	if in.Request != nil {
+		out.Request = &clientsBarBar.BarRequest{}
+		out.Request.StringField = string(in.Request.StringField)
+		out.Request.BoolField = bool(in.Request.BoolField)
+		out.Request.BinaryField = []byte(in.Request.BinaryField)
+		out.Request.Timestamp = clientsBarBar.Timestamp(in.Request.Timestamp)
+		out.Request.EnumField = clientsBarBar.Fruit(in.Request.EnumField)
+		out.Request.LongField = clientsBarBar.Long(in.Request.LongField)
+	} else {
+		out.Request = nil
+	}
 	convertToNormalStringListClientRequest(in, out)
 
 	return out
