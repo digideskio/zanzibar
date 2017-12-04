@@ -173,23 +173,7 @@ func convertToCompareClientRequest(in *endpointsBazBaz.SimpleService_Compare_Arg
 	out := &clientsBazBaz.SimpleService_Compare_Args{}
 
 	convertToCompareArg1ClientRequest(in, out)
-	if in.Arg1 != nil {
-		out.Arg1 = &clientsBazBaz.BazRequest{}
-		out.Arg1.B1 = bool(in.Arg1.B1)
-		out.Arg1.S2 = string(in.Arg1.S2)
-		out.Arg1.I3 = int32(in.Arg1.I3)
-	} else {
-		out.Arg1 = nil
-	}
 	convertToCompareArg2ClientRequest(in, out)
-	if in.Arg2 != nil {
-		out.Arg2 = &clientsBazBaz.BazRequest{}
-		out.Arg2.B1 = bool(in.Arg2.B1)
-		out.Arg2.S2 = string(in.Arg2.S2)
-		out.Arg2.I3 = int32(in.Arg2.I3)
-	} else {
-		out.Arg2 = nil
-	}
 
 	return out
 }

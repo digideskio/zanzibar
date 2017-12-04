@@ -174,14 +174,6 @@ func convertToCallClientRequest(in *endpointsBazBaz.SimpleService_Call_Args) *cl
 	out := &clientsBazBaz.SimpleService_Call_Args{}
 
 	convertToCallArgClientRequest(in, out)
-	if in.Arg != nil {
-		out.Arg = &clientsBazBaz.BazRequest{}
-		out.Arg.B1 = bool(in.Arg.B1)
-		out.Arg.S2 = string(in.Arg.S2)
-		out.Arg.I3 = int32(in.Arg.I3)
-	} else {
-		out.Arg = nil
-	}
 
 	return out
 }
