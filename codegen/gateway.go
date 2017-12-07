@@ -724,6 +724,9 @@ func augmentHTTPEndpointSpec(
 			rValue := reflect.ValueOf(value)
 			kind := rValue.Kind()
 
+                        if map && map.type interface
+                                prettyOpts["Geofence"] = "deps.Client.Geofence"
+
 			if kind == reflect.Slice && rValue.Len() > 0 {
 				rType := rValue.Type()
 				rElemType := rType.Elem()

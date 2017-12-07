@@ -84,7 +84,8 @@
 					"foo",
 					"bar"
 				],
-				"Foo": "test"
+				"Foo": "test",
+                                "GeofenceClient": { "type": "interface", "name": "Geofence" }
 			}
 		}
 	],
