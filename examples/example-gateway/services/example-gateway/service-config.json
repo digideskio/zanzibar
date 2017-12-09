@@ -1,7 +1,9 @@
 {
 	"name": "example-gateway",
 	"type": "gateway",
-	"config": {},
+	"config": {
+		"createOptionsPackage": "github.com/uber/zanzibar/examples/example-gateway/services/example-gateway/createoptions"
+	},
 	"dependencies": {
 		"endpoint": [
 			"bar",

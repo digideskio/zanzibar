@@ -58,6 +58,7 @@ var levelMap = map[string]zapcore.Level{
 type Options struct {
 	MetricsBackend tally.CachedStatsReporter
 	LogWriter      zapcore.WriteSyncer
+	PrepareLogger  func() {}
 }
 
 // Gateway type
