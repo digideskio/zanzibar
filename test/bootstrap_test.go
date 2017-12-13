@@ -39,6 +39,7 @@ func TestBootstrapError(t *testing.T) {
 	if !assert.NoError(t, err, "must be able to create gateway") {
 		return
 	}
+	/* test */
 
 	defer gateway1.Close()
 
