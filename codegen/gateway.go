@@ -122,9 +122,10 @@ type ClientDependencies struct {
 
 // MiddlewareConfig represents configuration for a middleware.
 type MiddlewareConfig struct {
-	Name       string `json:"name"`
-	SchemaFile string `json:"schema"`
-	ImportPath string `json:"importPath"`
+	Name       string   `json:"name"`
+	SchemaFile string   `json:"schema"`
+	ImportPath string   `json:"importPath"`
+	ClientDeps []string `json:"clientDependencies,omitempty"`
 }
 
 // MiddlewareConfigsAll is a collection of MiddlewareConfig
@@ -325,6 +326,8 @@ type MiddlewareSpec struct {
 	Options map[string]interface{} `json:"options,omitempty"`
 	// Options pretty printed for template initialization
 	PrettyOptions map[string]string `json:"prettyOptions,omitempty"`
+	// list of client dependencies
+	ClientDeps []string
 }
 
 // NewMiddlewareSpec creates a middleware spec from a go file.
@@ -333,6 +336,7 @@ func NewMiddlewareSpec(
 	goFile string,
 	jsonSchemaFile string,
 	configDirName string,
+	clientDeps []string,
 ) (*MiddlewareSpec, error) {
 	schPath := filepath.Join(
 		configDirName,
@@ -360,8 +364,9 @@ func NewMiddlewareSpec(
 	// and package name match. Validate the options json schema matches the options
 	// struct
 	return &MiddlewareSpec{
-		Name: name,
-		Path: goFile,
+		Name:       name,
+		Path:       goFile,
+		ClientDeps: clientDeps,
 	}, nil
 }
 
@@ -611,7 +616,7 @@ func augmentHTTPEndpointSpec(
 			"Unable to parse middlewares field",
 		)
 	}
-	middlewares := make([]MiddlewareSpec, 0)
+	var middlewares []MiddlewareSpec
 	for _, middleware := range endpointMids {
 		middlewareObj, ok := middleware.(map[string]interface{})
 		if !ok {
@@ -954,6 +959,7 @@ func parseMiddlewareConfig(
 			mid.ImportPath,
 			mid.SchemaFile,
 			configDirName,
+			mid.ClientDeps,
 		)
 		if err != nil {
 			return nil, errors.Wrapf(
@@ -1041,6 +1047,12 @@ func NewGatewaySpec(
 		clientSpecs[i] = cspec
 		spec.ClientModules[cspec.ClientID] = cspec
 	}
+
+	err = checkModuleClientDependencies(spec)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, json := range endpointJsons {
 		espec, err := NewEndpointSpec(json, packageHelper, spec.MiddlewareModules)
 		if err != nil {
@@ -1059,4 +1071,21 @@ func NewGatewaySpec(
 	}
 
 	return spec, nil
+}
+
+func checkModuleClientDependencies(spec *GatewaySpec) error {
+	clients := make(map[string]bool, len(spec.ClientModules))
+	for _, cspec := range spec.ClientModules {
+		clients[cspec.ClientName] = true
+	}
+
+	for _, mspec := range spec.MiddlewareModules {
+		for _, clientName := range mspec.ClientDeps {
+			if _, ok := clients[clientName]; !ok {
+				return errors.Errorf("The client dependency \"%s\" for module \"%s\" is missing",
+					clientName, mspec.Name)
+			}
+		}
+	}
+	return nil
 }
